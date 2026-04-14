@@ -40,7 +40,7 @@ This project is a **standalone repo root** (not a subdirectory inside another ap
 
 ### Checklist
 
-1. **GitHub + Vercel:** Push the repo, import it in Vercel, deploy until the `*.vercel.app` URL works.
+1. **GitHub + Vercel:** Push the repo, import it in Vercel, deploy until the `*.vercel.app` URL works. Use the **Next.js** framework preset; leave **Output Directory** empty (this app is not a static export to `public`). [`vercel.json`](vercel.json) sets `"framework": "nextjs"` to help detection.
 2. **Custom domain:** Vercel → Project → Settings → Domains → add `gunvir.co.uk` (and optionally `www.gunvir.co.uk`). Use the exact DNS records Vercel shows.
 3. **Cloudflare DNS:** For `gunvir.co.uk`, add/update apex **A** (or as Vercel specifies) and **www** **CNAME** to Vercel’s target; remove conflicting records. If the certificate stays pending, set those records to **DNS only** (grey cloud), wait for Vercel to issue SSL, then reassess.
 4. **Verify:** `https://gunvir.co.uk` loads with a valid certificate; **Work** (LinkedIn) and **Projects** (in-page anchor) behave as expected; scrolling reaches all case sections; old links such as `/projects/manamauri` redirect to home and land on the right block.
