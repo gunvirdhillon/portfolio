@@ -1,8 +1,13 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import type { Project } from "@/lib/projects";
+import { MotionItem, MotionStagger } from "@/components/MotionStagger";
 import { ProjectMark } from "@/components/ProjectMark";
+
+const backClass =
+  "text-xs uppercase tracking-[0.08em] text-muted transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-cream rounded-sm";
 
 const ProjectDriveBrochure = dynamic(
   () => import("@/components/ProjectDriveBrochure"),
@@ -17,50 +22,49 @@ const ProjectDriveBrochure = dynamic(
   }
 );
 
-type ProjectStorySectionProps = {
+type ProjectPageClientProps = {
   project: Project;
-  sectionId: string;
 };
 
-export function ProjectStorySection({
-  project,
-  sectionId,
-}: ProjectStorySectionProps) {
+export function ProjectPageClient({ project }: ProjectPageClientProps) {
   const driveBrochure =
     project.brochure?.kind === "drive" ? project.brochure : undefined;
   const embedMode = driveBrochure?.embed ?? "full";
   const hasFullBrochure = Boolean(driveBrochure && embedMode !== "minimal");
   const hasMinimalBrochure = Boolean(driveBrochure && embedMode === "minimal");
-  const headingId = `story-${project.slug}-heading`;
   const highlightsTitle = project.highlights_heading ?? "Scope and outputs";
 
   return (
-    <section
-      id={sectionId}
-      aria-labelledby={headingId}
-      className={`scroll-mt-28 border-t border-rule pt-16 md:scroll-mt-32 md:pt-20 ${
+    <MotionStagger
+      className={`relative z-10 mx-auto pad-x-safe py-16 md:py-20 ${
         hasFullBrochure ? "max-w-3xl xl:max-w-6xl" : "max-w-3xl"
-      } mx-auto w-full`}
+      }`}
     >
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="min-w-0 flex-1">
-          <h2
-            id={headingId}
-            className="font-serif text-[clamp(1.5rem,2.5vw+0.75rem,2.25rem)] font-normal leading-tight text-ink"
-          >
-            {project.title}
-          </h2>
-          <p className="mt-2 text-sm text-subtle">{project.period}</p>
-          <p className="mt-3 text-base text-muted">{project.descriptor}</p>
+      <MotionItem>
+        <Link href="/work" className={backClass}>
+          ← Work
+        </Link>
+      </MotionItem>
+      <MotionItem className="mt-10">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="min-w-0 flex-1">
+            <h1 className="font-serif text-[clamp(1.75rem,3vw+1rem,2.75rem)] font-normal leading-tight text-ink">
+              {project.title}
+            </h1>
+            <p className="mt-2 text-sm text-subtle">{project.period}</p>
+            <p className="mt-3 text-base text-muted">{project.descriptor}</p>
+          </div>
+          {project.logo ? <ProjectMark logo={project.logo} /> : null}
         </div>
-        {project.logo ? <ProjectMark logo={project.logo} /> : null}
-      </div>
-      <hr className="mt-8 border-rule" />
+      </MotionItem>
+      <MotionItem className="mt-8">
+        <hr className="border-rule" />
+      </MotionItem>
       {project.highlights && project.highlights.length > 0 ? (
-        <div className="mt-10">
-          <h3 className="text-[11px] uppercase tracking-[0.08em] text-muted">
+        <MotionItem className="mt-10">
+          <h2 className="text-[11px] uppercase tracking-[0.08em] text-muted">
             {highlightsTitle}
-          </h3>
+          </h2>
           <ul className="mt-4 list-inside list-disc space-y-2 text-ink marker:text-accent">
             {project.highlights.map((item) => (
               <li key={item} className="pl-1">
@@ -68,9 +72,9 @@ export function ProjectStorySection({
               </li>
             ))}
           </ul>
-        </div>
+        </MotionItem>
       ) : null}
-      <div className="mt-10 max-w-prose space-y-6">
+      <MotionItem className="mt-10 max-w-prose space-y-6">
         {project.body.map((paragraph, i) => (
           <p key={i} className="text-ink">
             {paragraph}
@@ -99,12 +103,12 @@ export function ProjectStorySection({
             </a>
           </p>
         ) : null}
-      </div>
+      </MotionItem>
       {hasFullBrochure && driveBrochure ? (
-        <div className="mt-10">
+        <MotionItem>
           <ProjectDriveBrochure brochure={driveBrochure} />
-        </div>
+        </MotionItem>
       ) : null}
-    </section>
+    </MotionStagger>
   );
 }

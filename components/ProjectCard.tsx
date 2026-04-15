@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { Project } from "@/lib/projects";
 import { ProjectMark } from "@/components/ProjectMark";
 
@@ -10,14 +11,32 @@ type ProjectCardProps = {
 
 export function ProjectCard({ project }: ProjectCardProps) {
   const isActive = project.status === "active";
+  const mark = project.card_logo ? (
+    <Image
+      src={project.card_logo.src}
+      alt={project.card_logo.alt}
+      width={project.card_logo.width}
+      height={project.card_logo.height}
+      className="h-8 w-auto max-w-[120px] shrink-0 object-contain object-right md:h-9"
+    />
+  ) : project.logo ? (
+    <ProjectMark logo={project.logo} />
+  ) : null;
 
   const inner = (
     <>
       <div className="flex items-start justify-between gap-3">
-        <h3 className="min-w-0 font-serif text-xl text-ink md:text-2xl">
-          {project.title}
-        </h3>
-        {project.logo ? <ProjectMark logo={project.logo} /> : null}
+        <div className="min-w-0 flex-1">
+          <h3 className="min-w-0 font-serif text-xl text-ink md:text-2xl">
+            {project.title}
+          </h3>
+          {project.card_badge ? (
+            <p className="mt-1 text-[10px] uppercase tracking-[0.12em] text-subtle">
+              {project.card_badge}
+            </p>
+          ) : null}
+        </div>
+        {mark}
       </div>
       <p className="mt-1 text-xs uppercase tracking-[0.08em] text-subtle">
         {project.period}
@@ -35,8 +54,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
     </>
   );
 
-  const shellClass =
-    "border-t-[3px] border-ink bg-surface p-6 md:p-7";
+  const shellClass = "border-t-[3px] border-ink bg-surface p-6 md:p-7";
 
   if (isActive) {
     return (

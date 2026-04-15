@@ -13,24 +13,39 @@ const displaySerif = Newsreader({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://gunvir.co.uk"),
-  title: {
-    default: "Gunvir Dhillon",
-    template: "%s | Gunvir Dhillon",
-  },
+  metadataBase: new URL("https://www.gunvir.co.uk"),
+  title: "Gunvir Dhillon",
   description:
-    "Revenue leader and GTM consultant. B2B sales, advisory, independent product builds. London.",
+    "Gunvir Dhillon — enterprise B2B sales leader and builder. $2M+ ARR closed, 130%+ quota attainment, EU Salesperson of the Year 2025. London.",
   alternates: {
     canonical: "/",
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
   openGraph: {
     title: "Gunvir Dhillon",
     description:
-      "Revenue leader and GTM consultant. B2B sales, advisory, independent product builds. London.",
-    url: "https://gunvir.co.uk",
+      "Enterprise B2B sales leader and builder. $2M+ ARR, 130%+ attainment, EU Salesperson of the Year 2025. London.",
+    url: "https://www.gunvir.co.uk/",
     siteName: "Gunvir Dhillon",
-    locale: "en_GB",
+    images: [
+      {
+        url: "https://www.gunvir.co.uk/og-image.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
     type: "website",
+    locale: "en_GB",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Gunvir Dhillon",
+    description:
+      "Enterprise B2B sales leader and builder. $2M+ ARR, 130%+ attainment, EU Salesperson of the Year 2025. London.",
+    images: ["https://www.gunvir.co.uk/og-image.png"],
   },
 };
 

@@ -14,17 +14,23 @@ export function Nav() {
         <Link href="/" className={linkClass}>
           Gunvir Dhillon
         </Link>
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+        <div className="flex flex-wrap items-center justify-end gap-x-5 gap-y-2 sm:gap-x-6">
+          <a href="/#about" className={linkClass}>
+            About
+          </a>
+          <a href="/#selected-projects" className={linkClass}>
+            Projects
+          </a>
           <a
             href={LINKEDIN_PROFILE_URL}
             target="_blank"
             rel="noopener noreferrer"
             className={linkClass}
           >
-            Work
+            LinkedIn ↗
           </a>
-          <a href="/#selected-projects" className={linkClass}>
-            Projects
+          <a href="/#contact" className={linkClass}>
+            Contact
           </a>
         </div>
       </nav>
