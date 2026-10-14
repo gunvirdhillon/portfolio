@@ -12,11 +12,11 @@ export function ObfuscatedEmail() {
   }, []);
 
   if (!email) {
-    return <span className="text-subtle">Loading…</span>;
+    return <span className="opacity-60">Loading…</span>;
   }
 
   return (
-    <a href={`mailto:${email}`} className="text-ink underline underline-offset-2">
+    <a href={`mailto:${email}`} className="focus-ring link-underline rounded-sm text-inherit">
       {email}
     </a>
   );

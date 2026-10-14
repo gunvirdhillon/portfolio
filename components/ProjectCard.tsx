@@ -1,9 +1,5 @@
-import Image from "next/image";
 import type { Project } from "@/lib/projects";
-import { ProjectMark } from "@/components/ProjectMark";
-
-const focusLink =
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-cream";
+import { CompanyMark } from "@/components/ProjectMark";
 
 type ProjectCardProps = {
   project: Project;
@@ -11,55 +7,106 @@ type ProjectCardProps = {
 
 export function ProjectCard({ project }: ProjectCardProps) {
   const isActive = project.status === "active";
-  const mark = project.card_logo ? (
-    <Image
-      src={project.card_logo.src}
-      alt={project.card_logo.alt}
-      width={project.card_logo.width}
-      height={project.card_logo.height}
-      unoptimized
-      priority
-      className="h-7 w-auto md:h-8"
-    />
-  ) : project.logo ? (
-    <ProjectMark logo={project.logo} />
-  ) : null;
+  const featured = Boolean(project.featured);
+  const tone = featured ? "dark" : "light";
 
-  const inner = (
+  const c = featured
+    ? {
+        shell: "on-band bg-band text-band-ink border-accent sm:col-span-2 lg:col-span-3",
+        meta: "text-band-muted",
+        role: "text-band-muted",
+        rule: "border-band-rule",
+        result: "text-band-ink",
+        badge: "border-band-rule text-band-muted",
+        cta: "text-accent",
+      }
+    : {
+        shell: "bg-surface text-ink border-ink",
+        meta: "text-subtle",
+        role: "text-muted",
+        rule: "border-rule",
+        result: "text-ink",
+        badge: "border-rule text-subtle",
+        cta: "text-ink",
+      };
+
+  const head = (
+    <div className="flex min-h-10 items-center justify-between gap-4">
+      <div data-card-mark className="flex h-10 items-center">
+        <CompanyMark project={project} tone={tone} priority />
+      </div>
+      <p className={`tabular shrink-0 text-sm ${c.meta}`}>{project.period}</p>
+    </div>
+  );
+
+  const titleBlock = (
     <>
-      {mark ? <div className="flex h-10 items-center">{mark}</div> : null}
-      <h3 className="mt-4 font-serif text-xl leading-snug text-ink [overflow-wrap:anywhere] md:text-2xl">
+      <h3
+        data-card-title
+        className={`font-serif font-normal leading-[1.1] tracking-tight [overflow-wrap:anywhere] ${
+          featured ? "mt-6 text-[clamp(1.75rem,3vw+0.5rem,2.5rem)]" : "mt-5 text-[1.625rem]"
+        }`}
+      >
         {project.title}
       </h3>
       {project.card_badge ? (
-        <p className="mt-1 whitespace-nowrap text-[10px] uppercase tracking-[0.12em] text-subtle">
+        <p
+          data-card-badge
+          className={`mt-2 inline-block self-start whitespace-nowrap border px-2 py-0.5 text-xs ${c.badge}`}
+        >
           {project.card_badge}
         </p>
       ) : null}
-      <p className="mt-1 text-xs uppercase tracking-[0.08em] text-subtle">
-        {project.period}
-      </p>
-      <p className="mt-3 max-w-2xl text-base text-muted">{project.card_subtitle}</p>
-      <div className="mt-auto pt-6">
-        {isActive ? (
-          <span className="text-xs uppercase tracking-[0.08em] text-accent transition-colors group-hover:text-ink">
-            Read →
-          </span>
-        ) : (
-          <p className="text-xs uppercase tracking-[0.08em] text-subtle">In development</p>
-        )}
-      </div>
+      <p className={`mt-3 text-[0.9375rem] leading-relaxed ${c.role}`}>{project.descriptor}</p>
     </>
   );
 
-  const span = project.featured ? "sm:col-span-2 lg:col-span-3" : "";
-  const shellClass = `flex h-full flex-col border-t-[3px] border-ink bg-surface p-6 md:p-7 ${span}`;
+  const result = (
+    <p
+      className={`text-pretty ${c.result} ${
+        featured ? "font-serif text-[clamp(1.25rem,1.2vw+0.9rem,1.625rem)] leading-snug" : "text-base leading-relaxed"
+      }`}
+    >
+      {project.card_subtitle}
+    </p>
+  );
+
+  const cta = isActive ? (
+    <span className={`text-sm font-bold ${c.cta} underline decoration-transparent decoration-2 underline-offset-4 transition-colors group-hover:decoration-current`}>
+      Read the case note
+    </span>
+  ) : (
+    <span className={`text-sm ${c.meta}`}>In development</span>
+  );
+
+  const inner = featured ? (
+    <div className="grid gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-14">
+      <div>
+        {head}
+        {titleBlock}
+      </div>
+      <div className={`flex flex-col border-t pt-6 lg:border-l lg:border-t-0 lg:pl-14 lg:pt-1 ${c.rule}`}>
+        {result}
+        <div className="mt-auto pt-6">{cta}</div>
+      </div>
+    </div>
+  ) : (
+    <>
+      {head}
+      {titleBlock}
+      <div className={`mt-5 border-t pt-4 ${c.rule}`}>{result}</div>
+      <div className="mt-auto pt-6">{cta}</div>
+    </>
+  );
+
+  const shellClass = `flex h-full flex-col border-t-[3px] p-6 md:p-8 ${c.shell}`;
 
   if (isActive) {
     return (
       <a
+        data-card
         href={`#project-${project.slug}`}
-        className={`group ${shellClass} shadow-none transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-md ${focusLink} rounded-sm`}
+        className={`group focus-ring ${shellClass}`}
       >
         {inner}
       </a>
@@ -67,6 +114,8 @@ export function ProjectCard({ project }: ProjectCardProps) {
   }
 
   return (
-    <article className={`${shellClass} rounded-sm`}>{inner}</article>
+    <article data-card className={shellClass}>
+      {inner}
+    </article>
   );
 }
