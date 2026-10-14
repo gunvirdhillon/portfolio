@@ -223,15 +223,6 @@ export const homeProjectSlugs = [
   "10x-music",
 ] as const;
 
-/** Work timeline page: same engagements as home, same order. */
-export function getWorkProjects(): Project[] {
-  return homeProjectSlugs.map((slug) => {
-    const p = getProjectBySlug(slug);
-    if (!p) throw new Error(`Missing project for slug: ${slug}`);
-    return p;
-  });
-}
-
 export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
 }
