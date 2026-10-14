@@ -71,11 +71,14 @@ export function HomePageClient({ projects, scrollToSlug }: HomePageClientProps) 
             Since May 2026 I have been the founding Account Executive at Noxus, a
             seed-stage enterprise AI company, based in London.
           </p>
-          <p className="col-text col-support tabular mt-6 text-pretty lg:mt-8 xl:pt-2.5">
-            I built the Noxus outbound engine behind $4.4m of qualified pipeline in five
-            months. At Global-e I closed $2m+ ARR at 130%+ attainment and won EU
-            Mid-Market Salesperson of the Year 2025.
-          </p>
+          <div className="col-text col-support tabular mt-6 text-pretty lg:mt-8 xl:pt-2.5">
+            <p>
+              I built the Noxus outbound engine behind $4.4m of qualified pipeline in five
+              months. At Global-e I closed $2m+ ARR at 130%+ attainment and won EU
+              Mid-Market Salesperson of the Year 2025.
+            </p>
+            <p className="mt-4">I also won the Global-e AI Hackathon.</p>
+          </div>
         </div>
       </div>
 
