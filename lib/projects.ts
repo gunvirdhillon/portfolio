@@ -43,35 +43,67 @@ export type Project = {
   brochure?: ProjectBrochure;
   /** Inline link after case study body. */
   closing_link?: { label: string; href: string };
+  /** Card spans the full grid row. */
+  featured?: boolean;
 };
 
 export const projects: Project[] = [
   {
+    slug: "noxus",
+    title: "Noxus",
+    descriptor:
+      "Founding Account Executive and Head of Value Engineering, enterprise AI process automation",
+    card_subtitle:
+      "Founding AE. $4.4m qualified pipeline in five months; Santander expanded to a global framework agreement.",
+    period: "2026 – now",
+    featured: true,
+    card_badge: "Seed-stage AI",
+    logo: { kind: "monogram", text: "NX" },
+    highlights_heading: "Highlights",
+    highlights: [
+      "Expanded Santander from a Portugal engagement to a global framework agreement; closed the first $70k expansion and negotiated the UK, Brazil and Mexico markets with the CEO",
+      "Account owner for Sky",
+      "$4.4m qualified pipeline in five months from Noxus's first outbound engine",
+      "Manufacturing motion launched June 2026: 233 accounts targeted, 17 opened (7.3%), $1.2m pipeline in ten weeks",
+      "Dial-to-meeting conversion from 0.18% to 2.69%; booked meetings from 0.25 to 7 a week",
+      "Hired and onboarded two SDRs; the team books 8 to 10 outbound meetings a month",
+    ],
+    body: [
+      "Noxus is a seed-stage company that automates enterprise business processes with AI. Customers include Santander, Sky and Carlsberg. I joined in May 2026 as founding Account Executive and became Head of Value Engineering in September 2026.",
+      "Santander started as a single engagement in Portugal. I expanded it into a global framework agreement, closed the first $70k expansion, and negotiated the UK, Brazil and Mexico markets with the CEO. I am also account owner for Sky.",
+      "There was no outbound engine when I arrived, so I built one. I rewrote targeting, messaging and qualification: dial-to-meeting conversion went from 0.18% to 2.69%, booked meetings from 0.25 to 7 a week, and call volume doubled. The engine produced $4.4m of qualified pipeline in five months, including three $140k proposals live with market-leading F&B manufacturers whose combined revenue is above $22bn.",
+      "In June 2026 I launched the manufacturing motion: 233 accounts targeted, 17 opened (7.3%) and $1.2m of pipeline in ten weeks. It is now the company's strongest segment for pipeline creation and progression.",
+      "To find where the product sells, I tested demand across five sectors through C-level calls, qualified on pain, budget and systems, and turned the results into use cases, ROI models and sales plays the team now runs. I also set up the SDR function: hired and onboarded two SDRs and wrote the playbook and the meeting-acceptance process.",
+    ],
+    status: "active",
+  },
+  {
     slug: "global-e",
     title: "Global-e",
-    descriptor: "Enterprise sales, cross-border MoR solution",
-    card_subtitle: "Enterprise SaaS sales, $2M+ ARR, EU Salesperson of the Year",
+    descriptor:
+      "Business Development Manager, UK. Enterprise sales of a cross-border MoR solution",
+    card_subtitle:
+      "Enterprise SaaS sales, $2m+ ARR, EU Mid-Market Salesperson of the Year 2025",
     period: "2024 – 2026",
     highlights_heading: "Highlights",
     highlights: [
-      "$2M+ ARR closed in 2025 at 130%+ attainment for three consecutive quarters",
+      "$2m+ ARR closed in 2025 at 130%+ attainment for three consecutive quarters",
       "EU Mid-Market Salesperson of the Year 2025",
       "$240k ARR competitive displacement against an entrenched incumbent at one of the UK's fastest-growing athleisure brands (£70m+ revenue)",
-      "Won the 2025 Global-e AI Hackathon; now leading commercial rollout of the tool",
-      "Fastest promotion in company history: SDR to Sales Manager in 8 months",
+      "Won the 2025 Global-e AI Hackathon with a tool adopted internally",
     ],
     card_badge: "NASDAQ: GLBE",
     card_logo: {
       src: "/images/global-e-logo.png",
       alt: "Global-e logo",
-      width: 110,
-      height: 31,
+      width: 387,
+      height: 109,
     },
     body: [
       "Global-e (NASDAQ: GLBE) sells cross-border ecommerce and Merchant of Record solutions to enterprise online retailers and global brands. I ran full-cycle sales across mid-six to seven-figure deal sizes using MEDDPICC for qualification, forecasting, and deal control.",
       "I built ROI-backed business cases for every cycle, multi-threaded across buying committees at VP and C-suite level, and steered deals through procurement, legal, and security review to signature. I partnered with the EU CEO and CRO on GTM strategy for a new product line, covering competitive positioning, territory planning, and outbound execution.",
       "The $240k competitive displacement came from one of the UK's fastest-growing athleisure brands, a £70m+ business running an entrenched incumbent. I won it through consultative selling and a differentiated commercial case.",
-      "Led our team's winning entry in Global-e's 2025 AI Hackathon: an AI-powered live demo tool that shows prospects how Global-e would change their site in real time. Working with our developers, we defined which features to surface and how each one maps to a business problem, then shaped the output into something the sales team could use. Before I left, we presented the tool to Engineering, the CRO, CTO, and CPO and collaborated with those teams to plan the commercial rollout.",
+      "Led our team's winning entry in Global-e's 2025 AI Hackathon: an AI-powered live demo tool that shows prospects how Global-e would change their site in real time. Working with our developers, we defined which features to surface and how each one maps to a business problem, then shaped the output into something the sales team could use. We presented it to Engineering, the CRO, CTO and CPO, and the tool was adopted internally.",
     ],
     status: "active",
   },
@@ -129,7 +161,7 @@ export const projects: Project[] = [
     title: "Manamauri Energy",
     descriptor: "GTM strategy, ICP, and EU market entry",
     card_subtitle: "ICP, positioning, EU market entry, and fundraising support",
-    period: "2024 – 2025",
+    period: "2024 – now",
     highlights: [
       "Commercial audit across channels, pricing, partners, and outbound",
       "ICP and positioning rebuilt with the founders",
@@ -213,6 +245,7 @@ export const projects: Project[] = [
 
 /** Home grid order (newest first). */
 export const homeProjectSlugs = [
+  "noxus",
   "global-e",
   "reussite",
   "cosmetics",
@@ -220,15 +253,6 @@ export const homeProjectSlugs = [
   "dental-group",
   "10x-music",
 ] as const;
-
-/** Work timeline page: same engagements as home, same order. */
-export function getWorkProjects(): Project[] {
-  return homeProjectSlugs.map((slug) => {
-    const p = getProjectBySlug(slug);
-    if (!p) throw new Error(`Missing project for slug: ${slug}`);
-    return p;
-  });
-}
 
 export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);

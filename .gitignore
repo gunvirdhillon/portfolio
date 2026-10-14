@@ -35,3 +35,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# editor and agent local files
+.cursor/
+.cursorrules
+.cursorignore
+.claude/settings.local.json

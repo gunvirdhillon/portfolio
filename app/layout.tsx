@@ -1,22 +1,30 @@
 import type { Metadata, Viewport } from "next";
-import { Newsreader } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { Grain } from "@/components/Grain";
+import { SITE_URL } from "@/lib/site";
 
-const displaySerif = Newsreader({
-  subsets: ["latin"],
-  weight: ["400", "600"],
+const displaySerif = localFont({
+  src: [
+    { path: "./fonts/newsreader-latin-400-normal.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/newsreader-latin-600-normal.woff2", weight: "600", style: "normal" },
+  ],
   variable: "--font-display-serif",
   display: "swap",
 });
 
+const SITE_TITLE = "Gunvir Dhillon | Enterprise Account Executive, AI and SaaS";
+const SITE_DESCRIPTION =
+  "Founding AE at Noxus (enterprise AI). $2m+ ARR at 130%+ attainment at Global-e; EU Mid-Market Salesperson of the Year 2025. London.";
+const SOCIAL_DESCRIPTION =
+  "Founding AE at Noxus, enterprise AI: $4.4m qualified pipeline in five months. Before that, $2m+ ARR at 130%+ attainment at Global-e. London.";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.gunvir.co.uk"),
-  title: "Gunvir Dhillon",
-  description:
-    "Gunvir Dhillon — enterprise B2B sales leader and builder. $2M+ ARR closed, 130%+ quota attainment, EU Salesperson of the Year 2025. London.",
+  metadataBase: new URL(SITE_URL),
+  title: { default: SITE_TITLE, template: "%s | Gunvir Dhillon" },
+  description: SITE_DESCRIPTION,
   alternates: {
     canonical: "/",
   },
@@ -25,14 +33,13 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   openGraph: {
-    title: "Gunvir Dhillon",
-    description:
-      "Enterprise B2B sales leader and builder. $2M+ ARR, 130%+ attainment, EU Salesperson of the Year 2025. London.",
-    url: "https://www.gunvir.co.uk/",
+    title: SITE_TITLE,
+    description: SOCIAL_DESCRIPTION,
+    url: `${SITE_URL}/`,
     siteName: "Gunvir Dhillon",
     images: [
       {
-        url: "https://www.gunvir.co.uk/og-image.png",
+        url: `${SITE_URL}/og-image.png`,
         width: 1200,
         height: 630,
       },
@@ -42,10 +49,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Gunvir Dhillon",
-    description:
-      "Enterprise B2B sales leader and builder. $2M+ ARR, 130%+ attainment, EU Salesperson of the Year 2025. London.",
-    images: ["https://www.gunvir.co.uk/og-image.png"],
+    title: SITE_TITLE,
+    description: SOCIAL_DESCRIPTION,
+    images: [`${SITE_URL}/og-image.png`],
   },
 };
 

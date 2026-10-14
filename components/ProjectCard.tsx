@@ -17,7 +17,9 @@ export function ProjectCard({ project }: ProjectCardProps) {
       alt={project.card_logo.alt}
       width={project.card_logo.width}
       height={project.card_logo.height}
-      className="h-8 w-auto max-w-[120px] shrink-0 object-contain object-right md:h-9"
+      unoptimized
+      priority
+      className="h-7 w-auto md:h-8"
     />
   ) : project.logo ? (
     <ProjectMark logo={project.logo} />
@@ -25,42 +27,39 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
   const inner = (
     <>
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0 flex-1">
-          <h3 className="min-w-0 font-serif text-xl text-ink md:text-2xl">
-            {project.title}
-          </h3>
-          {project.card_badge ? (
-            <p className="mt-1 text-[10px] uppercase tracking-[0.12em] text-subtle">
-              {project.card_badge}
-            </p>
-          ) : null}
-        </div>
-        {mark}
-      </div>
+      {mark ? <div className="flex h-10 items-center">{mark}</div> : null}
+      <h3 className="mt-4 font-serif text-xl leading-snug text-ink [overflow-wrap:anywhere] md:text-2xl">
+        {project.title}
+      </h3>
+      {project.card_badge ? (
+        <p className="mt-1 whitespace-nowrap text-[10px] uppercase tracking-[0.12em] text-subtle">
+          {project.card_badge}
+        </p>
+      ) : null}
       <p className="mt-1 text-xs uppercase tracking-[0.08em] text-subtle">
         {project.period}
       </p>
-      <p className="mt-3 text-base text-muted">{project.card_subtitle}</p>
-      {isActive ? (
-        <span className="mt-6 inline-block text-xs uppercase tracking-[0.08em] text-accent transition-colors group-hover:text-ink">
-          Read →
-        </span>
-      ) : (
-        <p className="mt-6 text-xs uppercase tracking-[0.08em] text-subtle">
-          In development
-        </p>
-      )}
+      <p className="mt-3 max-w-2xl text-base text-muted">{project.card_subtitle}</p>
+      <div className="mt-auto pt-6">
+        {isActive ? (
+          <span className="text-xs uppercase tracking-[0.08em] text-accent transition-colors group-hover:text-ink">
+            Read →
+          </span>
+        ) : (
+          <p className="text-xs uppercase tracking-[0.08em] text-subtle">In development</p>
+        )}
+      </div>
     </>
   );
 
-  const shellClass = "border-t-[3px] border-ink bg-surface p-6 md:p-7";
+  const span = project.featured ? "sm:col-span-2 lg:col-span-3" : "";
+  const shellClass = `flex h-full flex-col border-t-[3px] border-ink bg-surface p-6 md:p-7 ${span}`;
 
   if (isActive) {
     return (
       <a
         href={`#project-${project.slug}`}
-        className={`group block ${shellClass} shadow-none transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-md ${focusLink} rounded-sm`}
+        className={`group ${shellClass} shadow-none transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-md ${focusLink} rounded-sm`}
       >
         {inner}
       </a>

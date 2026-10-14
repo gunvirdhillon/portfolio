@@ -32,12 +32,15 @@ export function HomePageClient({ projects, scrollToSlug }: HomePageClientProps) 
       <MotionItem>
         <div>
           <h1 className="text-balance font-serif text-[clamp(2rem,5vw+1rem,3.75rem)] font-normal leading-tight tracking-tight text-ink">
-            Revenue leader. Builder.
+            Enterprise seller. Builder.
           </h1>
           <p className="mt-6 max-w-2xl text-muted">
-            I closed $2M+ ARR in 2025 at 130%+ quota attainment selling enterprise
-            SaaS at Global-e (NASDAQ: GLBE) and won EU Mid-Market Salesperson of the
-            Year. I also build products, run GTM advisory, and ship code. London.
+            I am the founding Account Executive at Noxus, a seed-stage enterprise AI
+            company, and its Head of Value Engineering since September 2026. I
+            expanded Santander into a global framework agreement and built the
+            outbound engine behind $4.4m of qualified pipeline in five months. Before
+            that I closed $2m+ ARR in 2025 at 130%+ attainment at Global-e (NASDAQ:
+            GLBE) and won EU Mid-Market Salesperson of the Year 2025. London.
           </p>
         </div>
       </MotionItem>
@@ -55,23 +58,34 @@ export function HomePageClient({ projects, scrollToSlug }: HomePageClientProps) 
           </h2>
           <div className="mt-8 max-w-prose space-y-6 text-muted">
             <p>
-              I sell enterprise software and I build things. For the past two years I
-              carried quota at Global-e, closing cross-border MoR deals with enterprise
-              merchants and global brands. Before that I founded and sold a live events
-              business in 13 months, managed a $140m market data book at Macquarie Group,
-              and ran investment analysis for a family office in Dubai.
+              I sell enterprise software and I build things. Since May 2026 I
+              have been the founding Account Executive at Noxus, which
+              automates business processes with AI for large enterprises. I
+              expanded Santander, own the Sky account, built the
+              company&apos;s first outbound engine and SDR team, and now lead
+              value engineering: the use cases, ROI models and sales plays the
+              team runs.
             </p>
             <p>
-              Between roles I consult on GTM and commercial strategy for early-stage
-              companies, and I build my own products. Réussite, a premium solitaire app
-              for iOS and Android, is the current one. I vibe-coded the first version with
-              minimal programming knowledge. Shipping it taught me how developers think,
-              which makes me a sharper seller.
+              Before Noxus I carried quota at Global-e for nearly two years,
+              closing cross-border Merchant of Record deals with enterprise
+              merchants and global brands. Before that I founded and sold a
+              live events business in 13 months, managed a $140m market data
+              book at Macquarie Group, and ran investment analysis for a
+              family office in Dubai.
             </p>
             <p>
-              I like solving problems for people and watching them get results. That
-              instinct sits behind every deal I close and every advisory engagement I take
-              on.
+              Alongside the day job I advise early-stage companies on GTM and
+              commercial strategy, and I build my own products. Réussite, a
+              premium solitaire app for iOS and Android, is the current one. I
+              vibe-coded the first version with minimal programming knowledge.
+              Shipping it taught me how developers think, which makes me a
+              sharper seller.
+            </p>
+            <p>
+              I like solving problems for people and watching them get
+              results. That instinct sits behind every deal I close and every
+              advisory engagement I take on.
             </p>
           </div>
         </section>
@@ -87,7 +101,7 @@ export function HomePageClient({ projects, scrollToSlug }: HomePageClientProps) 
           >
             Selected projects
           </h2>
-          <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-5 xl:grid-cols-5">
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3">
             {projects.map((p) => (
               <ProjectCard key={p.slug} project={p} />
             ))}
