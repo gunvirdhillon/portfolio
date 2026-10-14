@@ -43,6 +43,8 @@ export type Project = {
   brochure?: ProjectBrochure;
   /** Inline link after case study body. */
   closing_link?: { label: string; href: string };
+  /** Card spans the full grid row. */
+  featured?: boolean;
 };
 
 export const projects: Project[] = [
@@ -64,8 +66,8 @@ export const projects: Project[] = [
     card_logo: {
       src: "/images/global-e-logo.png",
       alt: "Global-e logo",
-      width: 110,
-      height: 31,
+      width: 387,
+      height: 109,
     },
     body: [
       "Global-e (NASDAQ: GLBE) sells cross-border ecommerce and Merchant of Record solutions to enterprise online retailers and global brands. I ran full-cycle sales across mid-six to seven-figure deal sizes using MEDDPICC for qualification, forecasting, and deal control.",

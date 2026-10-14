@@ -61,10 +61,10 @@ export function ProjectStorySection({
           <h3 className="text-[11px] uppercase tracking-[0.08em] text-muted">
             {highlightsTitle}
           </h3>
-          <ul className="mt-4 list-inside list-disc space-y-2 text-ink marker:text-accent">
+          <ul className="mt-4 list-outside list-disc space-y-2 pl-5 text-ink marker:text-accent">
             {project.highlights.map((item) => (
               <li key={item} className="pl-1">
-                <span className="-ml-1">{item}</span>
+                {item}
               </li>
             ))}
           </ul>

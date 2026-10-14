@@ -87,7 +87,7 @@ export function HomePageClient({ projects, scrollToSlug }: HomePageClientProps) 
           >
             Selected projects
           </h2>
-          <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-5 xl:grid-cols-5">
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3">
             {projects.map((p) => (
               <ProjectCard key={p.slug} project={p} />
             ))}
