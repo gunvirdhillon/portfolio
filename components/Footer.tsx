@@ -5,7 +5,7 @@ export function Footer() {
   return (
     <footer className="page mt-auto pb-[max(2.5rem,env(safe-area-inset-bottom,0px))] pt-24">
       <div className="page-grid">
-        <p className="col-text tabular text-[0.9375rem] text-muted">
+        <p className="col-text type-caption tabular text-muted">
           © {year} Gunvir Dhillon, London, UK
         </p>
       </div>

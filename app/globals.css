@@ -72,7 +72,7 @@
 @layer components {
   /*
    * Page grid. Below lg everything stacks in one column. From lg there is a
-   * margin column for running heads, a text column set to about 66 characters,
+   * margin column for running heads, a text column set to about 62 characters,
    * and open space to the right that only rules, the headline and the project
    * index reach into.
    */
@@ -92,13 +92,13 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr);
   }
-  /* Keeps the measure on tablets too, where the grid is a single column. */
+  /* Keeps the measure at about 62 characters on phones and tablets too. */
   .col-text {
-    max-width: 36rem;
+    max-width: 25rem;
   }
   @media (min-width: 1024px) {
     .page-grid {
-      grid-template-columns: 10.5rem minmax(0, 36rem) minmax(0, 1fr);
+      grid-template-columns: 10.5rem minmax(0, 28rem) minmax(0, 1fr);
       column-gap: 3rem;
     }
     .col-margin {
@@ -106,6 +106,7 @@
     }
     .col-text {
       grid-column: 2;
+      max-width: 28rem;
     }
     .col-wide {
       grid-column: 2 / -1;
@@ -115,11 +116,108 @@
     }
   }
 
+  /*
+   * Three elements across the full width from 1280px: running head, lead,
+   * supporting text. Below that the lead and its support stack in the text
+   * column, as everywhere else.
+   */
+  @media (min-width: 1280px) {
+    .page-grid.triad {
+      grid-template-columns: 10.5rem minmax(0, 1.3fr) minmax(0, 1fr);
+      column-gap: 3.5rem;
+    }
+    /* A short lead stays in view beside long supporting text. */
+    .triad > .col-lead {
+      grid-column: 2;
+      grid-row: 1;
+      max-width: none;
+      position: sticky;
+      top: 2rem;
+      align-self: start;
+    }
+    .triad > .col-support {
+      grid-column: 3;
+      grid-row: 1;
+      max-width: 34rem;
+      margin-top: 0;
+    }
+  }
+
+  /*
+   * Type scale. One family, sizes on a ratio of roughly 1.25, weight eased
+   * off as size grows so the large settings stay light.
+   *   display        the name line in the hero
+   *   hero-lead      the opening statement
+   *   section-lead   the first statement of a section, the email address
+   *   title          case-note company names
+   *   running-head   section names, dates, labels (italic)
+   *   body           running text (set on body)
+   *   caption        footer, index dates, sidenote lists
+   */
+  .type-display {
+    font-size: clamp(2.625rem, 6.2vw + 0.5rem, 6.75rem);
+    font-weight: 340;
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+  }
+  .type-hero-lead {
+    font-size: 1.75rem;
+    font-weight: 360;
+    line-height: 1.2;
+    letter-spacing: -0.012em;
+  }
+  .type-section-lead {
+    font-size: 1.5rem;
+    font-weight: 370;
+    line-height: 1.25;
+    letter-spacing: -0.008em;
+  }
+  .type-title {
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: 1.15;
+  }
+  @media (min-width: 1024px) {
+    .type-hero-lead {
+      font-size: 2.375rem;
+    }
+    .type-section-lead {
+      font-size: 2rem;
+    }
+    .type-title {
+      font-size: 2.25rem;
+    }
+  }
+  @media (min-width: 1280px) {
+    .type-hero-lead {
+      font-size: 2.625rem;
+      line-height: 1.14;
+    }
+    .type-section-lead {
+      font-size: 2.25rem;
+      line-height: 1.2;
+    }
+  }
+  .type-caption {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  @media (min-width: 1024px) {
+    .type-caption {
+      font-size: 0.9375rem;
+    }
+  }
+
   /* Running heads and labels: italic, text size, never tracked capitals. */
   .running-head {
     @apply italic text-muted;
     font-size: 1rem;
     line-height: 1.5;
+  }
+  @media (min-width: 1024px) {
+    .running-head {
+      font-size: 1.0625rem;
+    }
   }
 
   /* Book paragraph rhythm: no gap, indent from the second paragraph on. */

@@ -23,7 +23,7 @@ export function ProjectIndex({ projects }: { projects: Project[] }) {
               {p.title}
             </span>
             <span className="text-pretty text-muted lg:text-ink">{smart(p.card_subtitle)}</span>
-            <span className="tabular order-first text-[0.9375rem] text-muted lg:order-none lg:text-right lg:text-[1rem]">
+            <span className="type-caption tabular order-first text-muted lg:order-none lg:text-right">
               {p.period}
             </span>
           </a>
