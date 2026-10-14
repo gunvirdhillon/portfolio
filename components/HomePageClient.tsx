@@ -20,18 +20,21 @@ function Section({
   title,
   children,
   className = "",
+  triad = false,
 }: {
   id?: string;
   title: string;
   children: ReactNode;
   className?: string;
+  /** Lay the section out as running head, lead and support from 1280px. */
+  triad?: boolean;
 }) {
   const headingId = `${id ?? title.toLowerCase().replace(/\s+/g, "-")}-heading`;
   return (
     <section
       id={id}
       aria-labelledby={headingId}
-      className={`page-grid mt-20 border-t border-ink pt-5 lg:mt-28 ${className}`}
+      className={`page-grid mt-20 border-t border-ink pt-5 lg:mt-28 ${triad ? "triad" : ""} ${className}`}
     >
       <h2 id={headingId} className="col-margin running-head mb-6 text-ink lg:mb-0 lg:pt-1.5">
         {title}
@@ -56,31 +59,32 @@ export function HomePageClient({ projects, scrollToSlug }: HomePageClientProps) 
 
   return (
     <div className="page">
-      {/* Hero: the headline hangs into the margin; the introduction sits in the text column. */}
-      <div className="page-grid pt-14 lg:pt-24">
-        <h1 className="col-full text-balance text-[clamp(2.625rem,6.2vw+0.5rem,6.75rem)] font-[340] leading-[0.98] tracking-[-0.025em]">
-          Enterprise seller. Builder.
-        </h1>
-        <div className="col-text mt-8 lg:mt-14">
-          <p className="text-pretty text-[1.3125rem] leading-[1.45] lg:text-[1.5rem]">
-            I am the founding Account Executive at Noxus, a seed-stage enterprise AI
-            company, and its Head of Value Engineering since September 2026.
+      {/* Hero: the headline runs the full width; below it, from 1280px, the
+          running head, the lead and the figures sit side by side. */}
+      <div className="pt-14 lg:pt-24">
+        <h1 className="type-display text-balance">Enterprise seller. Builder.</h1>
+        <div className="page-grid triad mt-8 lg:mt-14 xl:mt-16">
+          <p className="col-margin running-head mb-3 lg:mb-0 lg:pt-2">
+            Enterprise Account Executive
           </p>
-          <p className="mt-5 text-pretty">
-            I expanded Santander into a global framework agreement and built the
-            outbound engine behind $4.4m of qualified pipeline in five months. Before
-            that I closed $2m+ ARR in 2025 at 130%+ attainment at Global-e (NASDAQ:
-            GLBE) and won EU Mid-Market Salesperson of the Year 2025. London.
+          <p className="col-text col-lead type-hero-lead text-balance">
+            Since May 2026 I have been the founding Account Executive at Noxus, a
+            seed-stage enterprise AI company, based in London.
+          </p>
+          <p className="col-text col-support tabular mt-6 text-pretty lg:mt-8 xl:pt-2.5">
+            I built the Noxus outbound engine behind $4.4m of qualified pipeline in five
+            months. At Global-e I closed $2m+ ARR at 130%+ attainment and won EU
+            Mid-Market Salesperson of the Year 2025.
           </p>
         </div>
       </div>
 
-      <Section id="about" title="About">
-        <div className="col-text indented text-pretty">
+      <Section id="about" title="About" triad>
+        <p className="col-text col-lead type-section-lead text-balance">
+          I sell enterprise software and <em>I build things.</em>
+        </p>
+        <div className="col-text col-support indented mt-6 text-pretty lg:mt-8 xl:pt-2">
           <p>
-            <span className="mb-4 block text-[1.5rem] leading-snug lg:text-[1.75rem]">
-              I sell enterprise software and I build things.
-            </span>{" "}
             Since May 2026 I have been the founding Account Executive at Noxus, which
             automates business processes with AI for large enterprises. I expanded
             Santander, own the Sky account, built the company’s first outbound engine
@@ -122,7 +126,7 @@ export function HomePageClient({ projects, scrollToSlug }: HomePageClientProps) 
 
       <Section id="contact" title="Get in touch">
         <div className="col-text">
-          <p className="text-[1.625rem] leading-tight [overflow-wrap:anywhere] lg:text-[2.25rem]">
+          <p className="type-section-lead [overflow-wrap:anywhere]">
             <ObfuscatedEmail />
           </p>
           <p className="mt-4">
