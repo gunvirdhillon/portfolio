@@ -16,32 +16,23 @@ type ProjectStorySectionProps = {
 };
 
 /**
- * The highlights as a plain ruled list with its label in the margin. As a
- * sidenote (employed roles, wide screens) the list moves into the open column
- * beside the narrative, label on top, so the figures sit next to the story.
+ * The highlights as a plain ruled list with its label in the margin. From
+ * 1280px the list moves into the open column beside the narrative, label on
+ * top, so the figures sit next to the story.
  */
-function Highlights({ project, sidenote = false }: { project: Project; sidenote?: boolean }) {
+function Highlights({ project }: { project: Project }) {
   if (!project.highlights?.length) return null;
   const headingId = `story-${project.slug}-highlights`;
-  const side = sidenote ? "xl:col-start-3 xl:row-start-2 xl:mt-10 xl:block xl:self-start" : "";
   return (
-    <div className={`col-full page-grid ${side}`}>
-      <h4
-        id={headingId}
-        className={`col-margin running-head mt-10 lg:mt-12 lg:pt-3 ${sidenote ? "xl:mt-0 xl:pt-0" : ""}`}
-      >
-        {project.highlights_heading ?? "Scope and outputs"}
+    <div className="col-full page-grid xl:col-start-3 xl:row-start-2 xl:mt-10 xl:block xl:self-start">
+      <h4 id={headingId} className="col-margin running-head mt-10 lg:mt-12 lg:pt-3 xl:mt-0 xl:pt-0">
+        Highlights
       </h4>
-      <ul
-        aria-labelledby={headingId}
-        className={`col-text mt-3 border-b border-rule lg:mt-12 ${sidenote ? "xl:mt-3" : ""}`}
-      >
+      <ul aria-labelledby={headingId} className="col-text mt-3 border-b border-rule lg:mt-12 xl:mt-3">
         {project.highlights.map((item) => (
           <li
             key={item}
-            className={`text-pretty border-t border-rule py-3 text-[1rem] leading-normal lg:text-[1.0625rem] ${
-              sidenote ? "xl:py-2.5 xl:text-[0.9375rem]" : ""
-            }`}
+            className="text-pretty border-t border-rule py-3 text-[1rem] leading-normal lg:text-[1.0625rem] xl:py-2.5 xl:text-[0.9375rem]"
           >
             {smart(item)}
           </li>
@@ -53,15 +44,13 @@ function Highlights({ project, sidenote = false }: { project: Project; sidenote?
 
 /**
  * One case note. The running head (dates, and the ticker, stage or country)
- * sits in the margin. Employed roles, where the figures are the story, lead
- * with their highlights (beside the narrative on wide screens); advisory and
- * founder work leads with the narrative and closes with its scope.
+ * sits in the margin, the company and its italic descriptor in the text
+ * column. Highlights come before the narrative, and beside it from 1280px.
  */
 export function ProjectStorySection({ project, sectionId }: ProjectStorySectionProps) {
   const driveBrochure = project.brochure?.kind === "drive" ? project.brochure : undefined;
   const embedMode = driveBrochure?.embed ?? "full";
   const headingId = `story-${project.slug}-heading`;
-  const resultsFirst = project.highlights_heading === "Highlights";
   const tag =
     project.status === "coming_soon" ? "In development" : project.card_badge ?? project.place;
 
@@ -80,14 +69,14 @@ export function ProjectStorySection({ project, sectionId }: ProjectStorySectionP
       <header className="col-text mt-2 lg:mt-0">
         <h3
           id={headingId}
-          className="flex min-h-9 items-center text-[2rem] font-normal leading-tight lg:text-[2.25rem]"
+          className="type-title flex min-h-9 items-center"
         >
           <CompanyName project={project} />
         </h3>
-        <p className="mt-2 text-pretty italic text-muted">{smart(project.descriptor)}</p>
+        <p className="mt-2 text-pretty text-[1.125rem] italic leading-snug text-muted lg:text-[1.3125rem]">{smart(project.descriptor)}</p>
       </header>
 
-      {resultsFirst ? <Highlights project={project} sidenote /> : null}
+      <Highlights project={project} />
 
       <div className="col-text indented mt-8 text-pretty lg:mt-10 xl:row-start-2">
         {project.body.map((paragraph, i) => (
@@ -107,8 +96,6 @@ export function ProjectStorySection({ project, sectionId }: ProjectStorySectionP
           </a>
         </p>
       ) : null}
-
-      {resultsFirst ? null : <Highlights project={project} />}
 
       {driveBrochure && embedMode === "minimal" ? (
         <div className="col-text mt-10">

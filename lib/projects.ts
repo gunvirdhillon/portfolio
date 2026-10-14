@@ -31,8 +31,6 @@ export type Project = {
   period: string;
   /** Scannable outputs (optional). */
   highlights?: string[];
-  /** Override default "Scope and outputs" heading above highlights. */
-  highlights_heading?: string;
   /** Wordmark for the case note heading (optional; plain name otherwise). */
   logo?: ProjectLogo;
   /** Short label in the running head (e.g. ticker or stage). */
@@ -61,7 +59,6 @@ export const projects: Project[] = [
       width: 944,
       height: 204,
     },
-    highlights_heading: "Highlights",
     highlights: [
       "Expanded Santander from a Portugal engagement to a global framework agreement; closed the first $70k expansion and negotiated the UK, Brazil and Mexico markets with the CEO",
       "Account owner for Sky",
@@ -87,7 +84,6 @@ export const projects: Project[] = [
     card_subtitle:
       "Enterprise SaaS sales, $2m+ ARR, EU Mid-Market Salesperson of the Year 2025",
     period: "2024 – 2026",
-    highlights_heading: "Highlights",
     highlights: [
       "$2m+ ARR closed in 2025 at 130%+ attainment for three consecutive quarters",
       "EU Mid-Market Salesperson of the Year 2025",
@@ -160,6 +156,7 @@ export const projects: Project[] = [
       "ICP and positioning rebuilt with the founders",
       "Phased EU market entry plan with partner and distributor scorecards",
       "Investor deck aligned to the operating plan",
+      "Fundraising round closed; EastBridge Global Investments acquired Manamauri",
     ],
     place: "United Arab Emirates",
     body: [
