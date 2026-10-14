@@ -15,7 +15,7 @@ const config: Config = {
         ink: "var(--ink)",
         muted: "var(--muted)",
         rule: "var(--rule)",
-        /* The one secondary colour: link underlines, focus outline, current-role marker. */
+        /* The one secondary colour: link underlines and the focus outline. */
         green: "var(--green)",
       },
       fontFamily: {
