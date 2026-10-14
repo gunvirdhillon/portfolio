@@ -77,7 +77,10 @@ export function HomePageClient({ projects, scrollToSlug }: HomePageClientProps) 
               months. At Global-e I closed $2m+ ARR at 130%+ attainment and won EU
               Mid-Market Salesperson of the Year 2025.
             </p>
-            <p className="mt-4">I also won the Global-e AI Hackathon.</p>
+            <p className="mt-4">
+              On the side I won Global-e&rsquo;s AI hackathon, building a tool the team still
+              uses.
+            </p>
           </div>
         </div>
       </div>
