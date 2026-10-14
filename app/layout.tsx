@@ -1,13 +1,15 @@
 import type { Metadata, Viewport } from "next";
-import { Newsreader } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { Grain } from "@/components/Grain";
 
-const displaySerif = Newsreader({
-  subsets: ["latin"],
-  weight: ["400", "600"],
+const displaySerif = localFont({
+  src: [
+    { path: "./fonts/newsreader-latin-400-normal.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/newsreader-latin-600-normal.woff2", weight: "600", style: "normal" },
+  ],
   variable: "--font-display-serif",
   display: "swap",
 });
