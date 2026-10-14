@@ -85,9 +85,9 @@ export function HomePageClient({ projects, scrollToSlug }: HomePageClientProps) 
                   </dd>
                 </div>
               ))}
-              <div className="col-span-2 flex flex-col justify-end border-b border-band-rule py-6 lg:col-span-1 lg:border-b-0 lg:pl-6">
+              <div className="flex flex-col justify-end border-b border-l border-band-rule py-6 pl-4 sm:pl-6 lg:border-b-0 lg:border-l-0">
                 <dt className="sr-only">Award</dt>
-                <dd className="font-serif text-[clamp(1.5rem,1vw+1.1rem,1.875rem)] leading-[1.15] text-band-ink">
+                <dd className="font-serif text-[clamp(1.1875rem,1.2vw+0.9rem,1.875rem)] leading-[1.15] text-band-ink">
                   EU Mid-Market Salesperson of the Year 2025
                   <span className="mt-2 block font-sans text-sm text-band-muted">Global-e</span>
                 </dd>

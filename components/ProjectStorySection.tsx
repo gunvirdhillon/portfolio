@@ -85,9 +85,11 @@ export function ProjectStorySection({ project, sectionId }: ProjectStorySectionP
               <summary className="focus-ring inline-flex cursor-pointer items-center gap-2 rounded-sm py-1 text-sm font-bold text-ink">
                 <span
                   aria-hidden
-                  className="inline-flex h-5 w-5 items-center justify-center border border-ink text-xs leading-none transition-transform duration-200 group-open:rotate-45 motion-reduce:transition-none"
+                  className="inline-flex h-5 w-5 items-center justify-center border border-ink text-sm leading-none"
                 >
-                  +
+                  <span className="inline-block transition-transform duration-200 group-open:rotate-45 motion-reduce:transition-none">
+                    +
+                  </span>
                 </span>
                 <span className="link-underline group-open:hidden">Read the full case note</span>
                 <span className="link-underline hidden group-open:inline">Hide the full case note</span>
