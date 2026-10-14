@@ -8,14 +8,13 @@ export type ProjectBrochure = {
   embed?: "minimal" | "full";
 };
 
-/** Optional client mark: image in /public, monogram text, or emoji (with SR label). */
-export type ProjectLogo =
-  | { kind: "image"; src: string; alt: string }
-  | { kind: "monogram"; text: string }
-  | { kind: "emoji"; glyph: string; label: string };
-
-export type ProjectCardLogo = {
+/**
+ * Company wordmark, shown in place of the name on the case note. `darkSrc` is
+ * used under the dark colour scheme; without one the mark is set in ink.
+ */
+export type ProjectLogo = {
   src: string;
+  darkSrc?: string;
   alt: string;
   width: number;
   height: number;
@@ -34,17 +33,15 @@ export type Project = {
   highlights?: string[];
   /** Override default "Scope and outputs" heading above highlights. */
   highlights_heading?: string;
-  /** Visual anchor on cards and story header (optional). */
+  /** Wordmark for the case note heading (optional; plain name otherwise). */
   logo?: ProjectLogo;
-  /** Subtle label on project card (e.g. ticker). */
+  /** Short label in the running head (e.g. ticker or stage). */
   card_badge?: string;
-  /** Wider mark on the card only (e.g. partner wordmark). */
-  card_logo?: ProjectCardLogo;
+  /** Country label in the running head for anonymous clients. */
+  place?: string;
   brochure?: ProjectBrochure;
   /** Inline link after case study body. */
   closing_link?: { label: string; href: string };
-  /** Card spans the full grid row. */
-  featured?: boolean;
 };
 
 export const projects: Project[] = [
@@ -56,9 +53,14 @@ export const projects: Project[] = [
     card_subtitle:
       "Founding AE. $4.4m qualified pipeline in five months; Santander expanded to a global framework agreement.",
     period: "2026 – now",
-    featured: true,
     card_badge: "Seed-stage AI",
-    logo: { kind: "monogram", text: "NX" },
+    logo: {
+      src: "/logos/noxus-wordmark.png",
+      darkSrc: "/logos/noxus-wordmark-white.png",
+      alt: "Noxus",
+      width: 944,
+      height: 204,
+    },
     highlights_heading: "Highlights",
     highlights: [
       "Expanded Santander from a Portugal engagement to a global framework agreement; closed the first $70k expansion and negotiated the UK, Brazil and Mexico markets with the CEO",
@@ -93,9 +95,9 @@ export const projects: Project[] = [
       "Won the 2025 Global-e AI Hackathon with a tool adopted internally",
     ],
     card_badge: "NASDAQ: GLBE",
-    card_logo: {
+    logo: {
       src: "/images/global-e-logo.png",
-      alt: "Global-e logo",
+      alt: "Global-e",
       width: 387,
       height: 109,
     },
@@ -118,11 +120,6 @@ export const projects: Project[] = [
       "Built solo in React Native from zero coding experience",
       "App Store and Google Play submission pipeline in progress",
     ],
-    logo: {
-      kind: "emoji",
-      glyph: "🃏",
-      label: "Playing card (solitaire)",
-    },
     body: [
       "Réussite is a solitaire game I am building alone. Familiar rules, quiet editorial UI, and a retail-style design sensibility drawn from Hermès and premium print.",
       "I built the entire app in React Native. I started with no real coding knowledge and used AI-assisted development to ship a working product. The point was to learn how developers and founders think about products so I can sell to them with more depth. That investment paid off in how I run discovery calls and how I talk to engineering stakeholders.",
@@ -143,11 +140,7 @@ export const projects: Project[] = [
       "New distribution agreements in the EU, with India and Africa in Phase 2",
       "Full site redevelopment scoped and in progress",
     ],
-    logo: {
-      kind: "emoji",
-      glyph: "🇮🇹",
-      label: "Italy flag",
-    },
+    place: "Italy",
     body: [
       "The brand posted a loss year as leadership changed. A co-founder departed and the board needed a recovery plan tied to the P&L, with named cuts and channel bets.",
       "I compared booked revenue to spend by route, rebuilt the channel mix, and cut arenas where burn outran upside. I reformed the revenue model so the business could generate margin again, then ranked the shortest repeatable wins in trade and direct online.",
@@ -168,11 +161,7 @@ export const projects: Project[] = [
       "Phased EU market entry plan with partner and distributor scorecards",
       "Investor deck aligned to the operating plan",
     ],
-    logo: {
-      kind: "emoji",
-      glyph: "🇦🇪",
-      label: "United Arab Emirates flag (Manamauri Energy)",
-    },
+    place: "United Arab Emirates",
     body: [
       "Manamauri had built a strong product and generated early revenue. The founders wanted to accelerate into a wider international footprint, a broader product catalogue, and new DTC channels. That transition required tighter commercial structure: a clear ICP, sharper positioning, and a phased plan for entering the EU.",
       "Together with the founding team, we mapped the channel stack, traced where pricing, partner coverage, and outbound could improve, then consolidated the ICP and positioning into a single brief. We built a phased EU market entry plan with partner and distributor scorecards, qualification steps, and talk tracks for live calls, and mirrored the strategy in the slide pack.",
@@ -194,11 +183,7 @@ export const projects: Project[] = [
       "KPI stack from zero: cadence, targets, and unit economics",
       "Invisalign pricing and marketing strategy that drove a provider tier upgrade",
     ],
-    logo: {
-      kind: "emoji",
-      glyph: "🇬🇧",
-      label: "United Kingdom flag",
-    },
+    place: "United Kingdom",
     body: [
       "The client, an experienced dentist, was acquiring a first practice. Clinical expertise and commercial operations require different skills, and the second set needed building from scratch. That gap defined the scope.",
       "On the buy side I sized the deal, sequenced short-term funding and term debt, and mapped the balance-sheet decisions that would matter after handover. After close I moved to operations: pricing, staffing, in-house efficiency, and keeping vendor spend narrow while building a roadmap past the first site.",
@@ -220,11 +205,6 @@ export const projects: Project[] = [
       "HubSpot: inbound triage, reporting, velocity tracking by region",
       "Revenue to high six figures in 13 months, then acquisition",
     ],
-    logo: {
-      kind: "emoji",
-      glyph: "🌍",
-      label: "Globe (international markets)",
-    },
     body: [
       "I had worked in live events since 2016 and built an extensive network across venues, brands, and promoters. I founded 10X Music to consolidate artist development, the label, and production under one roof.",
       "Clients booked large South Asian weddings and galas with Bollywood and Punjabi talent, staging at scale, and spend across the UK, India, the Gulf, and North America. 10X Live sold on production quality: wide LED walls, 20 ft mirrored floors in silver, gold, or custom print, and CAD floor plans signed before load-in. Each booking ran consultation, priced package, contract, post-sale site visits, invite and signage artwork, then an onsite show call. Staff in Birmingham, Delhi, and Dubai ran delivery end to end.",

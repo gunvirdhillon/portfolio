@@ -2,139 +2,120 @@
 
 import dynamic from "next/dynamic";
 import type { Project } from "@/lib/projects";
-import { CompanyMark } from "@/components/ProjectMark";
-import { Reveal } from "@/components/Reveal";
+import { CompanyName } from "@/components/CompanyName";
+import { smart } from "@/lib/typography";
 
-const ProjectDriveBrochure = dynamic(
-  () => import("@/components/ProjectDriveBrochure"),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="mt-14" aria-hidden>
-        <div className="h-3 w-28 bg-rule/60" />
-        <div className="mt-6 h-[min(64vh,560px)] min-h-[380px] animate-pulse border border-rule bg-surface" />
-      </div>
-    ),
-  }
-);
+const ProjectDriveBrochure = dynamic(() => import("@/components/ProjectDriveBrochure"), {
+  ssr: false,
+  loading: () => <div className="mt-10 h-[min(64vh,560px)] min-h-[380px] border border-rule" aria-hidden />,
+});
 
 type ProjectStorySectionProps = {
   project: Project;
   sectionId: string;
 };
 
+function Highlights({ project }: { project: Project }) {
+  if (!project.highlights?.length) return null;
+  const headingId = `story-${project.slug}-highlights`;
+  return (
+    <>
+      <h4 id={headingId} className="col-margin running-head mt-10 lg:mt-12 lg:pt-3">
+        {project.highlights_heading ?? "Scope and outputs"}
+      </h4>
+      <ul
+        aria-labelledby={headingId}
+        className="col-text mt-3 border-b border-rule lg:mt-12"
+      >
+        {project.highlights.map((item) => (
+          <li
+            key={item}
+            className="text-pretty border-t border-rule py-3 text-[1rem] leading-normal lg:text-[1.0625rem]"
+          >
+            {smart(item)}
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
+/**
+ * One case note. The running head (dates, and the ticker, stage or country)
+ * sits in the margin. Roles where the figures are the story lead with their
+ * highlights; advisory and founder work leads with the narrative and closes
+ * with its scope.
+ */
 export function ProjectStorySection({ project, sectionId }: ProjectStorySectionProps) {
   const driveBrochure = project.brochure?.kind === "drive" ? project.brochure : undefined;
   const embedMode = driveBrochure?.embed ?? "full";
-  const hasFullBrochure = Boolean(driveBrochure && embedMode !== "minimal");
-  const hasMinimalBrochure = Boolean(driveBrochure && embedMode === "minimal");
   const headingId = `story-${project.slug}-heading`;
-  const highlightsTitle = project.highlights_heading ?? "Scope and outputs";
-  const [lead, ...rest] = project.body;
-  const hasMore = rest.length > 0 || hasMinimalBrochure;
+  const resultsFirst = project.highlights_heading === "Highlights";
+  const tag =
+    project.status === "coming_soon" ? "In development" : project.card_badge ?? project.place;
 
   return (
-    <section
+    <article
       id={sectionId}
       aria-labelledby={headingId}
-      className="border-t border-rule py-14 first:border-t-0 first:pt-4 md:py-20 md:first:pt-6"
+      data-case-note
+      className="page-grid border-t border-rule pt-5 first:border-t-0 first:pt-0"
     >
-      <Reveal className="grid gap-8 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-16">
-        {/* Rail: who, when, what */}
-        <header className="lg:sticky lg:top-8 lg:self-start">
-          <div className="flex h-10 items-center">
-            <CompanyMark project={project} />
-          </div>
-          <h3
-            id={headingId}
-            className="mt-5 font-serif text-[clamp(1.75rem,2vw+1rem,2.25rem)] font-normal leading-[1.1] tracking-tight text-ink"
+      <p className="col-margin running-head flex flex-wrap gap-x-4 lg:block lg:pt-1.5">
+        <span className="tabular not-italic">{project.period}</span>
+        {tag ? <span className="lg:block">{tag}</span> : null}
+      </p>
+
+      <header className="col-text mt-2 lg:mt-0">
+        <h3
+          id={headingId}
+          className="flex min-h-9 items-center text-[2rem] font-normal leading-tight lg:text-[2.25rem]"
+        >
+          <CompanyName project={project} />
+        </h3>
+        <p className="mt-2 text-pretty italic text-muted">{smart(project.descriptor)}</p>
+      </header>
+
+      {resultsFirst ? <Highlights project={project} /> : null}
+
+      <div className="col-text indented mt-8 text-pretty lg:mt-10">
+        {project.body.map((paragraph, i) => (
+          <p key={i}>{smart(paragraph)}</p>
+        ))}
+      </div>
+
+      {project.closing_link ? (
+        <p className="col-text mt-4">
+          <a
+            href={project.closing_link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link"
           >
-            {project.title}
-          </h3>
-          <p className="tabular mt-3 text-sm text-subtle">{project.period}</p>
-          <p className="mt-3 max-w-measure text-[0.9375rem] leading-relaxed text-muted">
-            {project.descriptor}
-          </p>
-        </header>
+            {project.closing_link.label}
+          </a>
+        </p>
+      ) : null}
 
-        <div className="min-w-0">
-          {project.highlights && project.highlights.length > 0 ? (
-            <div>
-              <h4 className="text-sm font-bold text-ink">{highlightsTitle}</h4>
-              <ul className="mt-4 grid gap-x-10 gap-y-0 md:grid-cols-2">
-                {project.highlights.map((item) => (
-                  <li
-                    key={item}
-                    className="relative border-t border-rule py-4 pl-5 text-[0.9875rem] leading-relaxed text-ink before:absolute before:left-0 before:top-[1.6rem] before:h-1.5 before:w-1.5 before:bg-accent-deep before:content-['']"
-                  >
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
+      {resultsFirst ? null : <Highlights project={project} />}
 
-          {lead ? (
-            <p className="mt-10 max-w-measure text-pretty font-serif text-[clamp(1.25rem,0.6vw+1.1rem,1.4375rem)] leading-[1.5] text-ink">
-              {lead}
-            </p>
-          ) : null}
-
-          {hasMore ? (
-            <details className="details-reset group mt-6 max-w-measure">
-              <summary className="focus-ring inline-flex cursor-pointer items-center gap-2 rounded-sm py-1 text-sm font-bold text-ink">
-                <span
-                  aria-hidden
-                  className="inline-flex h-5 w-5 items-center justify-center border border-ink text-sm leading-none"
-                >
-                  <span className="inline-block transition-transform duration-200 group-open:rotate-45 motion-reduce:transition-none">
-                    +
-                  </span>
-                </span>
-                <span className="link-underline group-open:hidden">Read the full case note</span>
-                <span className="link-underline hidden group-open:inline">Hide the full case note</span>
-              </summary>
-              <div className="mt-6 space-y-5 text-muted">
-                {rest.map((paragraph, i) => (
-                  <p key={i} className="text-pretty">
-                    {paragraph}
-                  </p>
-                ))}
-                {hasMinimalBrochure && driveBrochure ? (
-                  <div className="w-full pt-2">
-                    <iframe
-                      src={`https://drive.google.com/file/d/${driveBrochure.driveFileId.trim()}/preview`}
-                      className="aspect-[4/3] w-full border border-rule bg-surface"
-                      allow="autoplay"
-                      loading="lazy"
-                      title="10X Music case study"
-                    />
-                  </div>
-                ) : null}
-              </div>
-            </details>
-          ) : null}
-
-          {project.closing_link ? (
-            <p className="mt-6">
-              <a
-                href={project.closing_link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="focus-ring link-underline rounded-sm text-ink"
-              >
-                {project.closing_link.label}
-              </a>
-            </p>
-          ) : null}
-
-          {hasFullBrochure && driveBrochure ? (
-            <div className="mt-10">
-              <ProjectDriveBrochure brochure={driveBrochure} />
-            </div>
-          ) : null}
+      {driveBrochure && embedMode === "minimal" ? (
+        <div className="col-text mt-10">
+          <iframe
+            src={`https://drive.google.com/file/d/${driveBrochure.driveFileId.trim()}/preview`}
+            className="aspect-[4/3] w-full border border-rule bg-white"
+            allow="autoplay"
+            loading="lazy"
+            title="10X Music case study"
+          />
         </div>
-      </Reveal>
-    </section>
+      ) : null}
+
+      {driveBrochure && embedMode !== "minimal" ? (
+        <div className="col-text">
+          <ProjectDriveBrochure brochure={driveBrochure} />
+        </div>
+      ) : null}
+    </article>
   );
 }
