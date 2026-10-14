@@ -2,14 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Paper and ink. One secondary colour, a deep green, used in two places only:
+ * link underlines and the keyboard focus outline.
+ */
+:root {
+  --paper: #f3f1ec;
+  --ink: #1c1b19;
+  --muted: #5f5b54;
+  --rule: #d2cdc3;
+  --green: #3a6650;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #1b1a18;
+    --ink: #e9e5dd;
+    --muted: #a39e94;
+    --rule: #3a3834;
+    --green: #9cc0aa;
+    color-scheme: dark;
+  }
+}
+
 @layer base {
-  body {
-    @apply bg-cream text-ink font-sans text-base leading-relaxed antialiased;
+  html {
+    -webkit-text-size-adjust: 100%;
   }
 
-  /* Skip-link / hash targets: keep anchor scroll from hiding content below static nav */
-  #main-content {
-    scroll-margin-top: 6.5rem;
+  body {
+    @apply bg-paper font-serif text-ink antialiased;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    font-optical-sizing: auto;
+    font-feature-settings: "kern", "liga";
+    hanging-punctuation: first allow-end;
+  }
+
+  @media (min-width: 1024px) {
+    body {
+      font-size: 1.1875rem;
+    }
+  }
+
+  #main-content,
+  section[id],
+  article[id] {
+    scroll-margin-top: 2rem;
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -17,15 +57,193 @@
       scroll-behavior: smooth;
     }
   }
+
+  ::selection {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /*
+   * Page grid. Below lg everything stacks in one column. From lg there is a
+   * margin column for running heads, a text column set to about 62 characters,
+   * and open space to the right that only rules, the headline and the project
+   * index reach into.
+   */
+  .page {
+    @apply mx-auto w-full max-w-[76rem];
+    padding-left: max(1.25rem, env(safe-area-inset-left, 0px));
+    padding-right: max(1.25rem, env(safe-area-inset-right, 0px));
+  }
+  @media (min-width: 768px) {
+    .page {
+      padding-left: max(2.5rem, env(safe-area-inset-left, 0px));
+      padding-right: max(2.5rem, env(safe-area-inset-right, 0px));
+    }
+  }
+
+  .page-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  /* Keeps the measure at about 62 characters on phones and tablets too. */
+  .col-text {
+    max-width: 25rem;
+  }
+  @media (min-width: 1024px) {
+    .page-grid {
+      grid-template-columns: 10.5rem minmax(0, 28rem) minmax(0, 1fr);
+      column-gap: 3rem;
+    }
+    .col-margin {
+      grid-column: 1;
+    }
+    .col-text {
+      grid-column: 2;
+      max-width: 28rem;
+    }
+    .col-wide {
+      grid-column: 2 / -1;
+    }
+    .col-full {
+      grid-column: 1 / -1;
+    }
+  }
+
+  /*
+   * Three elements across the full width from 1280px: running head, lead,
+   * supporting text. Below that the lead and its support stack in the text
+   * column, as everywhere else.
+   */
+  @media (min-width: 1280px) {
+    .page-grid.triad {
+      grid-template-columns: 10.5rem minmax(0, 1.3fr) minmax(0, 1fr);
+      column-gap: 3.5rem;
+    }
+    /* A short lead stays in view beside long supporting text. */
+    .triad > .col-lead {
+      grid-column: 2;
+      grid-row: 1;
+      max-width: none;
+      position: sticky;
+      top: 2rem;
+      align-self: start;
+    }
+    .triad > .col-support {
+      grid-column: 3;
+      grid-row: 1;
+      max-width: 34rem;
+      margin-top: 0;
+    }
+  }
+
+  /*
+   * Type scale. One family, sizes on a ratio of roughly 1.25, weight eased
+   * off as size grows so the large settings stay light.
+   *   display        the name line in the hero
+   *   hero-lead      the opening statement
+   *   section-lead   the first statement of a section, the email address
+   *   title          case-note company names
+   *   running-head   section names, dates, labels (italic)
+   *   body           running text (set on body)
+   *   caption        footer, index dates, sidenote lists
+   */
+  .type-display {
+    font-size: clamp(2.625rem, 6.2vw + 0.5rem, 6.75rem);
+    font-weight: 340;
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+  }
+  .type-hero-lead {
+    font-size: 1.75rem;
+    font-weight: 360;
+    line-height: 1.2;
+    letter-spacing: -0.012em;
+  }
+  .type-section-lead {
+    font-size: 1.5rem;
+    font-weight: 370;
+    line-height: 1.25;
+    letter-spacing: -0.008em;
+  }
+  .type-title {
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: 1.15;
+  }
+  @media (min-width: 1024px) {
+    .type-hero-lead {
+      font-size: 2.375rem;
+    }
+    .type-section-lead {
+      font-size: 2rem;
+    }
+    .type-title {
+      font-size: 2.25rem;
+    }
+  }
+  @media (min-width: 1280px) {
+    .type-hero-lead {
+      font-size: 2.625rem;
+      line-height: 1.14;
+    }
+    .type-section-lead {
+      font-size: 2.25rem;
+      line-height: 1.2;
+    }
+  }
+  .type-caption {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  @media (min-width: 1024px) {
+    .type-caption {
+      font-size: 0.9375rem;
+    }
+  }
+
+  /* Running heads and labels: italic, text size, never tracked capitals. */
+  .running-head {
+    @apply italic text-muted;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  @media (min-width: 1024px) {
+    .running-head {
+      font-size: 1.0625rem;
+    }
+  }
+
+  /* Book paragraph rhythm: no gap, indent from the second paragraph on. */
+  .indented > p + p {
+    text-indent: 1.5em;
+  }
+
+  .link {
+    text-decoration-line: underline;
+    text-decoration-color: var(--green);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.22em;
+  }
+  .link:hover {
+    text-decoration-color: currentColor;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
-
-  .pad-x-safe {
-    padding-left: max(1.5rem, env(safe-area-inset-left, 0px));
-    padding-right: max(1.5rem, env(safe-area-inset-right, 0px));
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
   }
 }

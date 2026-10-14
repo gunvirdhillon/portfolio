@@ -6,36 +6,20 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: "media",
   theme: {
     extend: {
+      /* Values live in globals.css as custom properties so the dark scheme can swap them. */
       colors: {
-        cream: "#efe9e0",
-        ink: "#12100e",
-        muted: "#5c5650",
-        subtle: "#847d76",
-        rule: "#b8b0a6",
-        surface: "#f5f1ea",
-        accent: "#6b5d4f",
+        paper: "var(--paper)",
+        ink: "var(--ink)",
+        muted: "var(--muted)",
+        rule: "var(--rule)",
+        /* The one secondary colour: link underlines and the focus outline. */
+        green: "var(--green)",
       },
       fontFamily: {
-        sans: [
-          "ui-sans-serif",
-          "system-ui",
-          "-apple-system",
-          "BlinkMacSystemFont",
-          '"Segoe UI"',
-          "Roboto",
-          '"Helvetica Neue"',
-          "Arial",
-          "sans-serif",
-        ],
-        serif: [
-          "var(--font-display-serif)",
-          "Georgia",
-          '"Times New Roman"',
-          "Times",
-          "serif",
-        ],
+        serif: ["var(--font-newsreader)", "Georgia", '"Times New Roman"', "serif"],
       },
     },
   },

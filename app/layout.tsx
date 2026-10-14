@@ -3,15 +3,15 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
-import { Grain } from "@/components/Grain";
 import { SITE_URL } from "@/lib/site";
 
-const displaySerif = localFont({
+/* Newsreader variable (opsz 6 to 72, wght 200 to 800), OFL. One family sets everything. */
+const newsreader = localFont({
   src: [
-    { path: "./fonts/newsreader-latin-400-normal.woff2", weight: "400", style: "normal" },
-    { path: "./fonts/newsreader-latin-600-normal.woff2", weight: "600", style: "normal" },
+    { path: "./fonts/newsreader-latin-opsz-normal.woff2", weight: "200 800", style: "normal" },
+    { path: "./fonts/newsreader-latin-opsz-italic.woff2", weight: "200 800", style: "italic" },
   ],
-  variable: "--font-display-serif",
+  variable: "--font-newsreader",
   display: "swap",
 });
 
@@ -67,17 +67,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-GB" className={displaySerif.variable}>
+    <html lang="en-GB" className={newsreader.variable}>
       <head>
         <link rel="dns-prefetch" href="https://drive.google.com" />
         <link rel="preconnect" href="https://drive.google.com" />
         <link rel="preconnect" href="https://docs.google.com" />
       </head>
-      <body className="relative flex min-h-screen flex-col">
-        <Grain />
+      <body className="flex min-h-screen flex-col">
         <a
           href="#main-content"
-          className="sr-only left-4 top-4 z-[100] rounded-sm border border-rule bg-surface px-4 py-2.5 text-xs uppercase tracking-[0.08em] text-ink focus:not-sr-only focus:absolute focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-cream"
+          className="sr-only left-4 top-4 z-[100] bg-ink px-4 py-2 text-paper focus:not-sr-only focus:absolute"
         >
           Skip to main content
         </a>
