@@ -3,15 +3,15 @@
 @tailwind utilities;
 
 /*
- * Paper and ink. One secondary colour, a deep green, used in three places only:
- * link underlines, the keyboard focus outline, and the "now" on current roles.
+ * Paper and ink. One secondary colour, a deep green, used in two places only:
+ * link underlines and the keyboard focus outline.
  */
 :root {
   --paper: #f3f1ec;
   --ink: #1c1b19;
   --muted: #5f5b54;
   --rule: #d2cdc3;
-  --green: #2f5443;
+  --green: #3a6650;
   color-scheme: light;
 }
 
@@ -91,6 +91,10 @@
   .page-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
+  }
+  /* Keeps the measure on tablets too, where the grid is a single column. */
+  .col-text {
+    max-width: 36rem;
   }
   @media (min-width: 1024px) {
     .page-grid {

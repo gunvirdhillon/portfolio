@@ -10,79 +10,67 @@ const OUT = process.env.SHOT_DIR || "";
   let failed = 0;
   for (const width of WIDTHS) {
     const page = await browser.newPage({ viewport: { width, height: 900 } });
+    const bad = [];
+    page.on("response", (res) => {
+      if (res.status() >= 400 && res.url().startsWith(BASE)) bad.push(`${res.status()} ${res.url().slice(BASE.length)}`);
+    });
     await page.goto(`${BASE}/`, { waitUntil: "networkidle" });
-    // Scroll through once so every scroll-reveal block has settled before measuring.
+    // Scroll through once so lazy images load before measuring.
     await page.evaluate(async () => {
       for (let y = 0; y < document.body.scrollHeight; y += 500) { window.scrollTo({ top: y, behavior: "instant" }); await new Promise((r) => setTimeout(r, 60)); }
       window.scrollTo({ top: 0, behavior: "instant" });
     });
-    await page.waitForTimeout(900);
+    await page.waitForTimeout(600);
     const r = await page.evaluate(() => {
       const problems = [];
-      const grid = document.querySelector("#selected-projects .grid");
-      const cols = getComputedStyle(grid).gridTemplateColumns.split(" ").length;
-      const cards = [...grid.children];
+      const box = (el) => el.getBoundingClientRect();
+      const overlaps = (a, b) => !(a.right <= b.left + 1 || a.left >= b.right - 1 || a.bottom <= b.top + 1 || a.top >= b.bottom - 1);
       if (document.documentElement.scrollWidth > window.innerWidth) problems.push("horizontal scroll");
-      for (const c of cards) {
-        const h3 = c.querySelector("[data-card-title]");
-        if (!h3) { problems.push("card without [data-card-title]"); continue; }
-        const name = h3.textContent.trim();
-        const cw = c.getBoundingClientRect().width;
-        if (cw < 260) problems.push(`${name}: card ${Math.round(cw)}px wide (min 260)`);
-        if (h3.scrollWidth > h3.clientWidth + 1) problems.push(`${name}: title overflows`);
-        if (c.scrollWidth > c.clientWidth + 1) problems.push(`${name}: card content overflows horizontally`);
-        const box = (el) => el.getBoundingClientRect();
-        const overlaps = (a, b) => !(a.right <= b.left || a.left >= b.right || a.bottom <= b.top || a.top >= b.bottom);
-        const mark = c.querySelector("[data-card-mark]");
-        if (!mark) problems.push(`${name}: no company mark`);
-        else {
-          const visible = [...mark.querySelectorAll("img, [role=img], span[aria-hidden]")].filter((el) => {
-            const st = getComputedStyle(el);
-            return st.opacity !== "0" && st.display !== "none" && el.getBoundingClientRect().width > 0;
-          });
-          if (!visible.length) problems.push(`${name}: company mark renders nothing`);
-          if (overlaps(box(mark), box(h3))) problems.push(`${name}: mark overlaps title`);
-          if (box(mark).right > box(c).right + 1) problems.push(`${name}: mark overflows card`);
-        }
-        const badge = c.querySelector("[data-card-badge]");
-        if (badge) {
-          if (box(badge).height > 30) problems.push(`${name}: badge wraps`);
-          if (box(badge).right > box(c).right + 1) problems.push(`${name}: badge overflows card`);
-        }
+
+      // Project index: one row per case note, cells never collide or overflow.
+      const rows = [...document.querySelectorAll("[data-index-row]")];
+      for (const row of rows) {
+        const a = row.querySelector("a");
+        const cells = [...a.children];
+        const name = row.querySelector("[data-index-name]")?.textContent.trim() || "?";
+        if (a.scrollWidth > a.clientWidth + 1) problems.push(`${name}: index row overflows`);
+        for (let i = 0; i < cells.length; i++)
+          for (let j = i + 1; j < cells.length; j++)
+            if (overlaps(box(cells[i]), box(cells[j]))) problems.push(`${name}: index cells ${i} and ${j} overlap`);
+        const target = document.querySelector(a.getAttribute("href"));
+        if (!target) problems.push(`${name}: index link has no target`);
       }
-      const tops = cards.map((c) => Math.round(c.getBoundingClientRect().top));
-      const lastTop = Math.max(...tops);
-      const lastRow = tops.filter((t) => t === lastTop).length;
-      const spansRow = cards[cards.length - 1].getBoundingClientRect().width > grid.clientWidth * 0.9;
-      if (cols > 1 && lastRow < cols && !spansRow) problems.push(`orphan: ${lastRow} card(s) on a ${cols}-column last row`);
-      const logo = document.querySelector("#selected-projects img[src*='global-e']");
-      if (logo && logo.getAttribute("loading") === "lazy") problems.push("card logo is lazy-loaded");
-      for (const li of document.querySelectorAll("section[id^='project-'] li")) {
-        const range = document.createRange();
-        range.selectNodeContents(li);
-        const rects = [...range.getClientRects()].filter((x) => x.width > 0);
-        if (rects.length > 1 && Math.abs(rects[0].left - rects[rects.length - 1].left) > 2) {
-          problems.push(`no hanging indent: "${li.textContent.slice(0, 40)}"`);
+      const notes = document.querySelectorAll("[data-case-note]");
+      if (notes.length !== rows.length) problems.push(`case notes (${notes.length}) do not match index rows (${rows.length})`);
+
+      // Wordmarks: visible variant has loaded and has the right accessible name.
+      for (const alt of ["Noxus", "Global-e"]) {
+        const shown = [...document.querySelectorAll(`img[alt="${alt}"]`)].filter((img) => img.getBoundingClientRect().width > 0);
+        if (shown.length !== 1) problems.push(`${alt}: ${shown.length} visible wordmarks (expected 1)`);
+        else if (!shown[0].complete || shown[0].naturalWidth === 0) problems.push(`${alt}: wordmark failed to load`);
+      }
+
+      // Measure: running text stays at or under about 75 characters a line.
+      for (const p of document.querySelectorAll("[data-case-note] .indented > p, #about p")) {
+        const cs = getComputedStyle(p);
+        const chars = p.clientWidth / (parseFloat(cs.fontSize) * 0.46);
+        if (chars > 78) { problems.push(`measure ${Math.round(chars)} characters: "${p.textContent.slice(0, 30)}"`); break; }
+      }
+
+      // Nothing pokes out of its column.
+      for (const el of document.querySelectorAll("h1, h2, h3, li, p"))
+        if (el.scrollWidth > el.clientWidth + 1 && getComputedStyle(el).overflowX === "visible" && el.clientWidth > 0) {
+          problems.push(`overflow: <${el.tagName.toLowerCase()}> "${el.textContent.trim().slice(0, 30)}"`);
           break;
         }
-      }
-      const stats = [...document.querySelectorAll("#main-content dl > div")];
-      for (let i = 0; i < stats.length; i++)
-        for (let j = i + 1; j < stats.length; j++) {
-          const a = stats[i].getBoundingClientRect(), b = stats[j].getBoundingClientRect();
-          if (!(a.right <= b.left + 1 || a.left >= b.right - 1 || a.bottom <= b.top + 1 || a.top >= b.bottom - 1))
-            problems.push(`hero stats ${i} and ${j} overlap`);
-        }
-      for (const dd of document.querySelectorAll("#main-content dl dd"))
-        if (dd.scrollWidth > dd.clientWidth + 1) problems.push(`stat "${dd.textContent.trim().slice(0, 20)}" overflows`);
+
       for (const id of ["about", "selected-projects", "contact"])
         if (!document.getElementById(id)) problems.push(`missing #${id}`);
-      if (document.querySelectorAll("section[id^='project-']").length !== cards.length)
-        problems.push("case note count does not match card count");
-      return { cols, n: cards.length, problems };
+      return { n: rows.length, problems };
     });
+    for (const b of bad) r.problems.push(`request failed: ${b}`);
     if (OUT) await page.screenshot({ path: `${OUT}/home-${width}.png`, fullPage: true });
-    console.log(`${width}px: ${r.cols} cols, ${r.n} cards, ${r.problems.length ? "FAIL" : "ok"}`);
+    console.log(`${width}px: ${r.n} index rows, ${r.problems.length ? "FAIL" : "ok"}`);
     r.problems.forEach((p) => console.log(`  - ${p}`));
     failed += r.problems.length;
     await page.close();

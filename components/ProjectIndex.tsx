@@ -8,11 +8,13 @@ import { smart } from "@/lib/typography";
 export function ProjectIndex({ projects }: { projects: Project[] }) {
   return (
     <ul data-index className="border-b border-rule">
-      {projects.map((p) => (
+      {projects.map((p, i) => (
         <li key={p.slug} data-index-row className="border-t border-rule first:border-t-0">
           <a
             href={`#project-${p.slug}`}
-            className="group grid gap-x-8 gap-y-1 py-4 lg:grid-cols-[12rem_minmax(0,1fr)_8rem] lg:items-baseline lg:py-[1.125rem]"
+            className={`group grid gap-x-8 gap-y-1 py-4 lg:grid-cols-[14rem_minmax(0,1fr)_7.5rem] lg:items-baseline lg:py-[1.125rem] ${
+              i === 0 ? "lg:pt-1" : ""
+            }`}
           >
             <span
               data-index-name

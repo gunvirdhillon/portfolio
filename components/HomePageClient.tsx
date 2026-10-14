@@ -113,7 +113,7 @@ export function HomePageClient({ projects, scrollToSlug }: HomePageClientProps) 
       </Section>
 
       <Section title="Case notes">
-        <div className="col-full mt-2 space-y-20 lg:-mt-1 lg:space-y-28">
+        <div className="col-full mt-4 space-y-20 lg:mt-12 lg:space-y-28">
           {projects.map((p) => (
             <ProjectStorySection key={p.slug} project={p} sectionId={`project-${p.slug}`} />
           ))}
