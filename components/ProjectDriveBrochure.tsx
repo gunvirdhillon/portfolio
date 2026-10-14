@@ -48,19 +48,17 @@ export default function ProjectDriveBrochure({
 
   return (
     <div className="mt-14">
-      <h2 className="text-[11px] uppercase tracking-[0.08em] text-subtle">
-        Brochure
-      </h2>
-      <div className="mt-6 overflow-hidden rounded-sm border border-rule bg-white/40">
+      <h2 className="running-head">Brochure</h2>
+      <div className="mt-6 overflow-hidden border border-rule">
         {previewSrc ? (
           <>
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-rule bg-paper/80 px-4 py-3">
-              <p className="text-sm font-medium text-ink">10X Live brochure</p>
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-rule px-4 py-3">
+              <p className="text-[1rem]">10X Live brochure</p>
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   type="button"
                   onClick={() => setLargePreview((v) => !v)}
-                  className="rounded-sm border border-rule bg-surface px-3 py-1.5 text-xs uppercase tracking-[0.08em] text-ink transition-colors hover:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+                  className="border border-rule px-3 py-1 text-[0.9375rem] transition-colors hover:border-ink"
                 >
                   {largePreview ? "Smaller preview" : "Larger preview"}
                 </button>
@@ -69,7 +67,7 @@ export default function ProjectDriveBrochure({
                     href={viewHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="rounded-sm border border-rule bg-surface px-3 py-1.5 text-xs uppercase tracking-[0.08em] text-ink transition-colors hover:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+                    className="border border-rule px-3 py-1 text-[0.9375rem] transition-colors hover:border-ink"
                   >
                     Open in Google Drive
                   </a>
@@ -91,7 +89,7 @@ export default function ProjectDriveBrochure({
                 />
               ) : (
                 <div
-                  className="absolute inset-0 flex items-center justify-center bg-white/50 text-sm text-muted"
+                  className="absolute inset-0 flex items-center justify-center text-[0.9375rem] text-muted"
                   aria-hidden
                 >
                   Preview loads as you scroll…
@@ -100,18 +98,18 @@ export default function ProjectDriveBrochure({
             </div>
           </>
         ) : (
-          <p className="px-4 py-8 text-sm text-muted leading-relaxed">
+          <p className="px-4 py-8 text-[0.9375rem] text-muted">
             To show the brochure here, upload the PDF to Google Drive, set access
             to &quot;Anyone with the link&quot; (Viewer), then add your file ID to{" "}
-            <code className="rounded bg-paper px-1 font-mono text-xs text-ink">
+            <code className="font-mono text-[0.8125rem]">
               .env.local
             </code>
             :{" "}
-            <code className="rounded bg-paper px-1 font-mono text-xs text-ink">
+            <code className="font-mono text-[0.8125rem]">
               NEXT_PUBLIC_10X_BROCHURE_DRIVE_FILE_ID=
             </code>
             . Use the ID from the share URL (
-            <code className="rounded bg-paper px-1 font-mono text-xs text-ink">
+            <code className="font-mono text-[0.8125rem]">
               /file/d/
               <span className="text-ink">THIS_PART</span>
               /view

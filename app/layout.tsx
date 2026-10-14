@@ -5,22 +5,13 @@ import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { SITE_URL } from "@/lib/site";
 
-const displaySerif = localFont({
+/* Newsreader variable (opsz 6 to 72, wght 200 to 800), OFL. One family sets everything. */
+const newsreader = localFont({
   src: [
-    { path: "./fonts/newsreader-latin-400-normal.woff2", weight: "400", style: "normal" },
-    { path: "./fonts/newsreader-latin-600-normal.woff2", weight: "600", style: "normal" },
+    { path: "./fonts/newsreader-latin-opsz-normal.woff2", weight: "200 800", style: "normal" },
+    { path: "./fonts/newsreader-latin-opsz-italic.woff2", weight: "200 800", style: "italic" },
   ],
-  variable: "--font-display-serif",
-  display: "swap",
-});
-
-/* Ledger Sans: OFL Latin subset of Lato (see app/fonts/OFL-ledger-sans.txt). */
-const bodySans = localFont({
-  src: [
-    { path: "./fonts/ledger-sans-latin-400.woff2", weight: "400", style: "normal" },
-    { path: "./fonts/ledger-sans-latin-700.woff2", weight: "700", style: "normal" },
-  ],
-  variable: "--font-body-sans",
+  variable: "--font-newsreader",
   display: "swap",
 });
 
@@ -76,16 +67,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-GB" className={`${displaySerif.variable} ${bodySans.variable}`}>
+    <html lang="en-GB" className={newsreader.variable}>
       <head>
         <link rel="dns-prefetch" href="https://drive.google.com" />
         <link rel="preconnect" href="https://drive.google.com" />
         <link rel="preconnect" href="https://docs.google.com" />
       </head>
-      <body className="relative flex min-h-screen flex-col">
+      <body className="flex min-h-screen flex-col">
         <a
           href="#main-content"
-          className="sr-only left-4 top-4 z-[100] rounded-sm bg-accent px-4 py-2.5 text-sm font-bold text-ink focus:not-sr-only focus:absolute focus:outline-none focus:ring-2 focus:ring-band-ink focus:ring-offset-2 focus:ring-offset-band"
+          className="sr-only left-4 top-4 z-[100] bg-ink px-4 py-2 text-paper focus:not-sr-only focus:absolute"
         >
           Skip to main content
         </a>

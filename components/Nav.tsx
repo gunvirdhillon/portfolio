@@ -1,44 +1,31 @@
 import Link from "next/link";
-import { LINKEDIN_PROFILE_URL } from "@/lib/site";
 
-const linkClass =
-  "focus-ring rounded-sm py-1 text-[0.9375rem] text-band-muted transition-colors hover:text-band-ink";
+const links = [
+  { href: "/#about", label: "About" },
+  { href: "/#selected-projects", label: "Projects" },
+  { href: "/#contact", label: "Contact" },
+];
 
+/** One line: name left, three links right, a hairline underneath. */
 export function Nav() {
   return (
-    <header className="on-band relative z-10 bg-band text-band-ink">
+    <header className="page pt-[max(1.25rem,env(safe-area-inset-top,0px))]">
       <nav
-        className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-3 pad-x-safe pb-5 pt-[max(1.25rem,env(safe-area-inset-top,0px))]"
         aria-label="Main"
+        className="flex items-baseline justify-between gap-6 border-b border-rule pb-4"
       >
-        <Link
-          href="/"
-          className="focus-ring rounded-sm font-serif text-xl font-semibold tracking-tight text-band-ink"
-        >
+        <Link href="/" className="text-[1.0625rem] font-medium">
           Gunvir Dhillon
         </Link>
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 sm:gap-x-7">
-          <a href="/#about" className={linkClass}>
-            About
-          </a>
-          <a href="/#selected-projects" className={linkClass}>
-            Projects
-          </a>
-          <a
-            href={LINKEDIN_PROFILE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={linkClass}
-          >
-            LinkedIn ↗
-          </a>
-          <a
-            href="/#contact"
-            className="focus-ring rounded-sm border border-band-rule px-3 py-1 text-[0.9375rem] text-band-ink transition-colors hover:border-accent"
-          >
-            Contact
-          </a>
-        </div>
+        <ul className="flex items-baseline gap-5 text-[1rem] text-muted sm:gap-7">
+          {links.map((l) => (
+            <li key={l.href}>
+              <a href={l.href} className="transition-colors hover:text-ink">
+                {l.label}
+              </a>
+            </li>
+          ))}
+        </ul>
       </nav>
     </header>
   );

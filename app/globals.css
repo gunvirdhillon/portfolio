@@ -2,16 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Paper and ink. One secondary colour, a deep green, used in three places only:
+ * link underlines, the keyboard focus outline, and the "now" on current roles.
+ */
+:root {
+  --paper: #f3f1ec;
+  --ink: #1c1b19;
+  --muted: #5f5b54;
+  --rule: #d2cdc3;
+  --green: #2f5443;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #1b1a18;
+    --ink: #e9e5dd;
+    --muted: #a39e94;
+    --rule: #3a3834;
+    --green: #9cc0aa;
+    color-scheme: dark;
+  }
+}
+
 @layer base {
-  body {
-    @apply bg-paper text-ink font-sans text-[1.0625rem] leading-[1.7] antialiased;
-    font-feature-settings: "kern", "liga";
+  html {
+    -webkit-text-size-adjust: 100%;
   }
 
-  /* Hash targets clear the top of the viewport with a little air */
+  body {
+    @apply bg-paper font-serif text-ink antialiased;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    font-optical-sizing: auto;
+    font-feature-settings: "kern", "liga";
+    hanging-punctuation: first allow-end;
+  }
+
+  @media (min-width: 1024px) {
+    body {
+      font-size: 1.1875rem;
+    }
+  }
+
   #main-content,
-  section[id] {
-    scroll-margin-top: 1.5rem;
+  section[id],
+  article[id] {
+    scroll-margin-top: 2rem;
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -21,26 +59,78 @@
   }
 
   ::selection {
-    background: #e3b341;
-    color: #172230;
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 3px;
   }
 }
 
 @layer components {
-  /* Default focus ring on paper; .on-band swaps it for the accent */
-  .focus-ring {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper;
+  /*
+   * Page grid. Below lg everything stacks in one column. From lg there is a
+   * margin column for running heads, a text column set to about 66 characters,
+   * and open space to the right that only rules, the headline and the project
+   * index reach into.
+   */
+  .page {
+    @apply mx-auto w-full max-w-[76rem];
+    padding-left: max(1.25rem, env(safe-area-inset-left, 0px));
+    padding-right: max(1.25rem, env(safe-area-inset-right, 0px));
   }
-  .on-band .focus-ring,
-  .on-band.focus-ring {
-    @apply focus-visible:ring-accent focus-visible:ring-offset-band;
+  @media (min-width: 768px) {
+    .page {
+      padding-left: max(2.5rem, env(safe-area-inset-left, 0px));
+      padding-right: max(2.5rem, env(safe-area-inset-right, 0px));
+    }
   }
 
-  .link-underline {
-    @apply underline decoration-accent-deep decoration-2 underline-offset-[5px] transition-colors hover:decoration-ink;
+  .page-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
   }
-  .on-band .link-underline {
-    @apply decoration-accent hover:decoration-band-ink;
+  @media (min-width: 1024px) {
+    .page-grid {
+      grid-template-columns: 10.5rem minmax(0, 36rem) minmax(0, 1fr);
+      column-gap: 3rem;
+    }
+    .col-margin {
+      grid-column: 1;
+    }
+    .col-text {
+      grid-column: 2;
+    }
+    .col-wide {
+      grid-column: 2 / -1;
+    }
+    .col-full {
+      grid-column: 1 / -1;
+    }
+  }
+
+  /* Running heads and labels: italic, text size, never tracked capitals. */
+  .running-head {
+    @apply italic text-muted;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  /* Book paragraph rhythm: no gap, indent from the second paragraph on. */
+  .indented > p + p {
+    text-indent: 1.5em;
+  }
+
+  .link {
+    text-decoration-line: underline;
+    text-decoration-color: var(--green);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.22em;
+  }
+  .link:hover {
+    text-decoration-color: currentColor;
   }
 }
 
@@ -52,25 +142,6 @@
     text-wrap: pretty;
   }
   .tabular {
-    font-variant-numeric: lining-nums tabular-nums;
-  }
-
-  .pad-x-safe {
-    padding-left: max(1.25rem, env(safe-area-inset-left, 0px));
-    padding-right: max(1.25rem, env(safe-area-inset-right, 0px));
-  }
-  @media (min-width: 768px) {
-    .pad-x-safe {
-      padding-left: max(2.5rem, env(safe-area-inset-left, 0px));
-      padding-right: max(2.5rem, env(safe-area-inset-right, 0px));
-    }
-  }
-
-  /* Hide the default disclosure triangle; we draw our own control */
-  .details-reset > summary {
-    list-style: none;
-  }
-  .details-reset > summary::-webkit-details-marker {
-    display: none;
+    font-variant-numeric: tabular-nums;
   }
 }

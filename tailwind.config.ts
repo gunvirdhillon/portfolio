@@ -6,45 +6,20 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: "media",
   theme: {
     extend: {
+      /* Values live in globals.css as custom properties so the dark scheme can swap them. */
       colors: {
-        /* Light body */
-        paper: "#F5F6F3",
-        surface: "#FFFFFF",
-        ink: "#172230",
-        muted: "#4C5866",
-        subtle: "#5F6B78",
-        rule: "#D3D7DB",
-        /* Dark band (hero, contact, footer) */
-        band: "#18283A",
-        "band-ink": "#EEF1F4",
-        "band-muted": "#B3BFCB",
-        "band-rule": "#33465B",
-        /* The one accent: marigold on the band, deepened to ochre on paper */
-        accent: "#E3B341",
-        "accent-deep": "#8F6300",
+        paper: "var(--paper)",
+        ink: "var(--ink)",
+        muted: "var(--muted)",
+        rule: "var(--rule)",
+        /* The one secondary colour: link underlines, focus outline, current-role marker. */
+        green: "var(--green)",
       },
       fontFamily: {
-        sans: [
-          "var(--font-body-sans)",
-          "ui-sans-serif",
-          "system-ui",
-          "-apple-system",
-          '"Segoe UI"',
-          "Roboto",
-          "Arial",
-          "sans-serif",
-        ],
-        serif: [
-          "var(--font-display-serif)",
-          "Georgia",
-          '"Times New Roman"',
-          "serif",
-        ],
-      },
-      maxWidth: {
-        measure: "65ch",
+        serif: ["var(--font-newsreader)", "Georgia", '"Times New Roman"', "serif"],
       },
     },
   },
