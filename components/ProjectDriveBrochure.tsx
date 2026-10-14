@@ -54,13 +54,13 @@ export default function ProjectDriveBrochure({
       <div className="mt-6 overflow-hidden rounded-sm border border-rule bg-white/40">
         {previewSrc ? (
           <>
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-rule bg-cream/80 px-4 py-3">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-rule bg-paper/80 px-4 py-3">
               <p className="text-sm font-medium text-ink">10X Live brochure</p>
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   type="button"
                   onClick={() => setLargePreview((v) => !v)}
-                  className="rounded-sm border border-rule bg-surface px-3 py-1.5 text-xs uppercase tracking-[0.08em] text-ink transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+                  className="rounded-sm border border-rule bg-surface px-3 py-1.5 text-xs uppercase tracking-[0.08em] text-ink transition-colors hover:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
                 >
                   {largePreview ? "Smaller preview" : "Larger preview"}
                 </button>
@@ -69,7 +69,7 @@ export default function ProjectDriveBrochure({
                     href={viewHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="rounded-sm border border-rule bg-surface px-3 py-1.5 text-xs uppercase tracking-[0.08em] text-accent transition-colors hover:border-accent hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+                    className="rounded-sm border border-rule bg-surface px-3 py-1.5 text-xs uppercase tracking-[0.08em] text-ink transition-colors hover:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
                   >
                     Open in Google Drive
                   </a>
@@ -103,17 +103,17 @@ export default function ProjectDriveBrochure({
           <p className="px-4 py-8 text-sm text-muted leading-relaxed">
             To show the brochure here, upload the PDF to Google Drive, set access
             to &quot;Anyone with the link&quot; (Viewer), then add your file ID to{" "}
-            <code className="rounded bg-cream px-1 font-mono text-xs text-ink">
+            <code className="rounded bg-paper px-1 font-mono text-xs text-ink">
               .env.local
             </code>
             :{" "}
-            <code className="rounded bg-cream px-1 font-mono text-xs text-ink">
+            <code className="rounded bg-paper px-1 font-mono text-xs text-ink">
               NEXT_PUBLIC_10X_BROCHURE_DRIVE_FILE_ID=
             </code>
             . Use the ID from the share URL (
-            <code className="rounded bg-cream px-1 font-mono text-xs text-ink">
+            <code className="rounded bg-paper px-1 font-mono text-xs text-ink">
               /file/d/
-              <span className="text-accent">THIS_PART</span>
+              <span className="text-ink">THIS_PART</span>
               /view
             </code>
             ). Restart the dev server after saving. Google&apos;s viewer shows the

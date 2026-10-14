@@ -3,7 +3,6 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
-import { Grain } from "@/components/Grain";
 import { SITE_URL } from "@/lib/site";
 
 const displaySerif = localFont({
@@ -12,6 +11,16 @@ const displaySerif = localFont({
     { path: "./fonts/newsreader-latin-600-normal.woff2", weight: "600", style: "normal" },
   ],
   variable: "--font-display-serif",
+  display: "swap",
+});
+
+/* Ledger Sans: OFL Latin subset of Lato (see app/fonts/OFL-ledger-sans.txt). */
+const bodySans = localFont({
+  src: [
+    { path: "./fonts/ledger-sans-latin-400.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/ledger-sans-latin-700.woff2", weight: "700", style: "normal" },
+  ],
+  variable: "--font-body-sans",
   display: "swap",
 });
 
@@ -67,17 +76,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-GB" className={displaySerif.variable}>
+    <html lang="en-GB" className={`${displaySerif.variable} ${bodySans.variable}`}>
       <head>
         <link rel="dns-prefetch" href="https://drive.google.com" />
         <link rel="preconnect" href="https://drive.google.com" />
         <link rel="preconnect" href="https://docs.google.com" />
       </head>
       <body className="relative flex min-h-screen flex-col">
-        <Grain />
         <a
           href="#main-content"
-          className="sr-only left-4 top-4 z-[100] rounded-sm border border-rule bg-surface px-4 py-2.5 text-xs uppercase tracking-[0.08em] text-ink focus:not-sr-only focus:absolute focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-cream"
+          className="sr-only left-4 top-4 z-[100] rounded-sm bg-accent px-4 py-2.5 text-sm font-bold text-ink focus:not-sr-only focus:absolute focus:outline-none focus:ring-2 focus:ring-band-ink focus:ring-offset-2 focus:ring-offset-band"
         >
           Skip to main content
         </a>

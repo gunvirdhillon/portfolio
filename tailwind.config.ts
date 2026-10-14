@@ -9,23 +9,30 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        cream: "#efe9e0",
-        ink: "#12100e",
-        muted: "#5c5650",
-        subtle: "#847d76",
-        rule: "#b8b0a6",
-        surface: "#f5f1ea",
-        accent: "#6b5d4f",
+        /* Light body */
+        paper: "#F5F6F3",
+        surface: "#FFFFFF",
+        ink: "#172230",
+        muted: "#4C5866",
+        subtle: "#5F6B78",
+        rule: "#D3D7DB",
+        /* Dark band (hero, contact, footer) */
+        band: "#18283A",
+        "band-ink": "#EEF1F4",
+        "band-muted": "#B3BFCB",
+        "band-rule": "#33465B",
+        /* The one accent: marigold on the band, deepened to ochre on paper */
+        accent: "#E3B341",
+        "accent-deep": "#8F6300",
       },
       fontFamily: {
         sans: [
+          "var(--font-body-sans)",
           "ui-sans-serif",
           "system-ui",
           "-apple-system",
-          "BlinkMacSystemFont",
           '"Segoe UI"',
           "Roboto",
-          '"Helvetica Neue"',
           "Arial",
           "sans-serif",
         ],
@@ -33,9 +40,11 @@ const config: Config = {
           "var(--font-display-serif)",
           "Georgia",
           '"Times New Roman"',
-          "Times",
           "serif",
         ],
+      },
+      maxWidth: {
+        measure: "65ch",
       },
     },
   },

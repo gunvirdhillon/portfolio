@@ -4,12 +4,14 @@
 
 @layer base {
   body {
-    @apply bg-cream text-ink font-sans text-base leading-relaxed antialiased;
+    @apply bg-paper text-ink font-sans text-[1.0625rem] leading-[1.7] antialiased;
+    font-feature-settings: "kern", "liga";
   }
 
-  /* Skip-link / hash targets: keep anchor scroll from hiding content below static nav */
-  #main-content {
-    scroll-margin-top: 6.5rem;
+  /* Hash targets clear the top of the viewport with a little air */
+  #main-content,
+  section[id] {
+    scroll-margin-top: 1.5rem;
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -17,15 +19,58 @@
       scroll-behavior: smooth;
     }
   }
+
+  ::selection {
+    background: #e3b341;
+    color: #172230;
+  }
+}
+
+@layer components {
+  /* Default focus ring on paper; .on-band swaps it for the accent */
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper;
+  }
+  .on-band .focus-ring,
+  .on-band.focus-ring {
+    @apply focus-visible:ring-accent focus-visible:ring-offset-band;
+  }
+
+  .link-underline {
+    @apply underline decoration-accent-deep decoration-2 underline-offset-[5px] transition-colors hover:decoration-ink;
+  }
+  .on-band .link-underline {
+    @apply decoration-accent hover:decoration-band-ink;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  .tabular {
+    font-variant-numeric: lining-nums tabular-nums;
+  }
 
   .pad-x-safe {
-    padding-left: max(1.5rem, env(safe-area-inset-left, 0px));
-    padding-right: max(1.5rem, env(safe-area-inset-right, 0px));
+    padding-left: max(1.25rem, env(safe-area-inset-left, 0px));
+    padding-right: max(1.25rem, env(safe-area-inset-right, 0px));
+  }
+  @media (min-width: 768px) {
+    .pad-x-safe {
+      padding-left: max(2.5rem, env(safe-area-inset-left, 0px));
+      padding-right: max(2.5rem, env(safe-area-inset-right, 0px));
+    }
+  }
+
+  /* Hide the default disclosure triangle; we draw our own control */
+  .details-reset > summary {
+    list-style: none;
+  }
+  .details-reset > summary::-webkit-details-marker {
+    display: none;
   }
 }
