@@ -27,6 +27,7 @@ export const metadata: Metadata = {
   description: SITE_DESCRIPTION,
   alternates: {
     canonical: "/",
+    types: { "text/plain": "/llms.txt" },
   },
   icons: {
     icon: "/favicon.ico",
